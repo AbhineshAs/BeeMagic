@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove Logo Background</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 50px; background: #f0f0f0; }
+        .card { background: white; padding: 30px; border-radius: 10px; max-width: 500px; margin: 0 auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        button { background: #d4af37; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; margin-top: 20px; }
+        button:hover { background: #b5952f; }
+        canvas { max-width: 100%; border: 1px dashed #ccc; margin-top: 20px; background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAACVJREFUKFNjZCASMDKgAnv37v3/n4QMQxWjqAETR1EwKqAYBQYArVwkQv9yT9IAAAAASUVORK5CYII=') repeat; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Transparent Logo Generator</h2>
+        <p>Since terminal permissions blocked the automatic script, you can click the button below to process the logo directly in your browser.</p>
+        <button id="processBtn">Process Image & Download</button>
+        <br>
+        <canvas id="canvas" style="display:none;"></canvas>
+    </div>
+
+    <script>
+        document.getElementById('processBtn').addEventListener('click', () => {
+            const img = new Image();
+            img.src = 'assets/2026-05-15 22.59.50.jpg'; // Load original image
+            img.onload = () => {
+                const canvas = document.getElementById('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d', { willReadFrequently: true });
+                ctx.drawImage(img, 0, 0);
+                
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+                
+                // Convert white background to transparent
+                for (let i = 0; i < data.length; i += 4) {
+                    const r = data[i];
+                    const g = data[i+1];
+                    const b = data[i+2];
+                    
+                    // If pixel is white or very light gray
+                    if (r > 220 && g > 220 && b > 220) {
+                        data[i+3] = 0; // Set alpha to 0
+                    }
+                }
+                
+                ctx.putImageData(imageData, 0, 0);
+                canvas.style.display = 'block';
+                
+                // Trigger download
+                const link = document.createElement('a');
+                link.download = 'logo-transparent.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            };
+        });
+    </script>
+</body>
+</html>

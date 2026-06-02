@@ -1,0 +1,63 @@
+:root {
+  /* Brand Colors */
+  --color-gold: #f59e0b;
+  --color-gold-hover: #d97706;
+  --color-gold-dark: #b45309;
+  
+  --color-text-main: #3b352c;
+  --color-text-muted: #78716c;
+  
+  --color-bg-light: #fdfaf6;
+  --color-bg-card: #ffffff;
+  --color-bg-footer: #3b352c;
+  --color-text-footer: #d1c9bd;
+  
+  --color-border: #e5e5e5;
+  --color-border-light: #f3f3f3;
+
+  /* Fonts */
+  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-text-main);
+  background-color: var(--color-bg-light);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+input, button {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
