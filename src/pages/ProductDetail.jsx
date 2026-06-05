@@ -19,6 +19,20 @@ export default function ProductDetail() {
   const navigate = useNavigate();
 
   const [reviewsList, setReviewsList] = useState([]);
+  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => (prev <= 1 ? 600 : prev - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}m ${secs.toString().padStart(2, '0')}s`;
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -145,9 +159,32 @@ export default function ProductDetail() {
                   </div>
                   <span className="review-count">{product.reviews || 0} Reviews</span>
                 </div>
-                <div className="price-row">
+                <div className="price-row" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
                   <span className="current-price">₹{product.price.toFixed(2)}</span>
-                  <span className="old-price">₹{(product.oldPrice || product.price * 1.2).toFixed(2)}</span>
+                  {product.oldPrice && (
+                    <>
+                      <span className="old-price">₹{product.oldPrice.toFixed(2)}</span>
+                      <span className="discount-percent">
+                        {Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}% OFF
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                <div className="special-offer-badge-box">
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <span className="offer-tag">₹50 OFFER</span>
+                      <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#b45309' }}>Flat discount applied at checkout!</span>
+                    </div>
+                    <p className="offer-description" style={{ margin: 0 }}>
+                      Claim your extra <strong>₹50.00 OFF</strong> to get this jar for only <strong style={{ fontSize: '1rem', color: '#16a34a' }}>₹{(product.price - 50).toFixed(0)}</strong> + <strong>FREE Shipping</strong>!
+                    </p>
+                    <div className="countdown-timer-line">
+                      <span className="pulse-dot-red"></span>
+                      <span>Offer ends in: <span style={{ fontFamily: 'monospace', fontSize: '0.95rem' }}>{formatTime(timeLeft)}</span></span>
+                    </div>
+                  </div>
                 </div>
               </div>
 

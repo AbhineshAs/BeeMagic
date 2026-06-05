@@ -10,6 +10,7 @@ export default function Shop() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('best');
+  const [activeCategory, setActiveCategory] = useState('all');
 
   useEffect(() => {
     fetch('/api/products')
@@ -26,10 +27,21 @@ export default function Shop() {
   }, []);
 
   useEffect(() => {
-    let result = products.filter(p =>
-      p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (p.collection && p.collection.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
+    let result = products.filter(p => {
+      const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            (p.collection && p.collection.toLowerCase().includes(searchQuery.toLowerCase()));
+      
+      if (!matchesSearch) return false;
+
+      if (activeCategory === 'infused') {
+        return p.collection === 'INFUSED HONEY COLLECTION';
+      } else if (activeCategory === 'pure') {
+        return p.collection === 'ARTISANAL PURE HONEY';
+      } else if (activeCategory === 'best') {
+        return p.badge === 'BEST SELLER' || p.badge === 'IMMUNITY BOOSTER' || p.badge === 'TROPICAL FAVORITE';
+      }
+      return true;
+    });
 
     if (sortBy === 'price-low') {
       result.sort((a, b) => a.price - b.price);
@@ -38,7 +50,7 @@ export default function Shop() {
     }
 
     setFilteredProducts(result);
-  }, [searchQuery, sortBy, products]);
+  }, [searchQuery, sortBy, activeCategory, products]);
 
   return (
     <div className="shop-page">
@@ -53,11 +65,18 @@ export default function Shop() {
               <Search className="search-icon" size={18} />
               <input
                 type="text"
-                placeholder="Search our artisanal collection..."
+                placeholder="Search for Products"
                 className="shop-search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
+            </div>
+
+            <div className="category-tabs-scroll">
+              <button className={`category-tab-btn ${activeCategory === 'all' ? 'active' : ''}`} onClick={() => setActiveCategory('all')}>For You</button>
+              <button className={`category-tab-btn ${activeCategory === 'infused' ? 'active' : ''}`} onClick={() => setActiveCategory('infused')}>Infused Honey</button>
+              <button className={`category-tab-btn ${activeCategory === 'pure' ? 'active' : ''}`} onClick={() => setActiveCategory('pure')}>Pure Honey</button>
+              <button className={`category-tab-btn ${activeCategory === 'best' ? 'active' : ''}`} onClick={() => setActiveCategory('best')}>Best Sellers</button>
             </div>
 
             <div className="filter-row">

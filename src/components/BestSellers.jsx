@@ -65,20 +65,34 @@ export default function BestSellers() {
     loadReviewsAndProducts();
   }, []);
 
+  const [slideDirection, setSlideDirection] = useState('next');
+
   useEffect(() => {
     if (allTestimonials.length <= 1) return;
     const timer = setInterval(() => {
+      setSlideDirection('next');
       setActiveIndex((prevIndex) => (prevIndex + 1) % allTestimonials.length);
     }, 6000);
     return () => clearInterval(timer);
   }, [allTestimonials]);
 
   const handlePrev = () => {
+    setSlideDirection('prev');
     setActiveIndex((prev) => (prev - 1 + allTestimonials.length) % allTestimonials.length);
   };
 
   const handleNext = () => {
+    setSlideDirection('next');
     setActiveIndex((prev) => (prev + 1) % allTestimonials.length);
+  };
+
+  const handleIndicatorClick = (index) => {
+    if (index > activeIndex) {
+      setSlideDirection('next');
+    } else if (index < activeIndex) {
+      setSlideDirection('prev');
+    }
+    setActiveIndex(index);
   };
 
   const active = allTestimonials[activeIndex] || testimonials[0];
@@ -95,7 +109,7 @@ export default function BestSellers() {
           <ChevronLeft size={24} />
         </button>
 
-        <div className="testimonial-card-wrapper" key={active.id}>
+        <div className={`testimonial-card-wrapper slide-${slideDirection}`} key={`${active.id}-${activeIndex}`}>
           <div className="testimonial-stars">
             {[...Array(active.rating)].map((_, i) => (
               <Star key={i} size={18} fill="#f59e0b" color="#f59e0b" />
@@ -115,10 +129,10 @@ export default function BestSellers() {
 
       <div className="slider-indicators">
         {allTestimonials.map((_, index) => (
-          <span 
-            key={index} 
+          <span
+            key={index}
             className={`indicator-dot ${index === activeIndex ? 'active' : ''}`}
-            onClick={() => setActiveIndex(index)}
+            onClick={() => handleIndicatorClick(index)}
           ></span>
         ))}
       </div>

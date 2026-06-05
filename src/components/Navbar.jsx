@@ -10,7 +10,7 @@ export default function Navbar() {
   const { user, logout, isAuthenticated, isAdmin } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
+
   // Profile dropdown and modal states
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
@@ -63,7 +63,7 @@ export default function Navbar() {
           <div className="nav-icons">
             {isAuthenticated ? (
               <div className="user-profile-nav-container">
-                <button 
+                <button
                   className="nav-icon-btn profile-trigger"
                   onClick={toggleDropdown}
                   aria-expanded={isDropdownOpen}
@@ -79,18 +79,18 @@ export default function Navbar() {
                       <p>{user.email}</p>
                     </div>
                     <div className="dropdown-divider"></div>
-                    <button 
-                      className="dropdown-item" 
-                      onClick={() => { 
-                        setIsProfileModalOpen(true); 
-                        setIsDropdownOpen(false); 
+                    <button
+                      className="dropdown-item"
+                      onClick={() => {
+                        setIsProfileModalOpen(true);
+                        setIsDropdownOpen(false);
                       }}
                     >
                       <User size={15} />
                       <span>View Profile</span>
                     </button>
-                    <Link 
-                      to="/track-order" 
+                    <Link
+                      to="/track-order"
                       className="dropdown-item"
                       onClick={() => setIsDropdownOpen(false)}
                     >
@@ -98,11 +98,11 @@ export default function Navbar() {
                       <span>Track Order</span>
                     </Link>
                     <div className="dropdown-divider"></div>
-                    <button 
-                      className="dropdown-item logout" 
-                      onClick={() => { 
-                        logout(); 
-                        setIsDropdownOpen(false); 
+                    <button
+                      className="dropdown-item logout"
+                      onClick={() => {
+                        logout();
+                        setIsDropdownOpen(false);
                       }}
                     >
                       <LogOut size={15} />
@@ -116,7 +116,7 @@ export default function Navbar() {
                 <Link to="/login" className="nav-outline-btn">Sign In</Link>
               </div>
             )}
-            
+
             <Link to="/cart" className="nav-icon-btn cart-btn">
               <ShoppingBag size={20} />
               {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
@@ -155,7 +155,7 @@ export default function Navbar() {
               <h2>User Profile</h2>
               <span className="profile-role-tag">{user.role || 'USER'}</span>
             </div>
-            
+
             <div className="profile-info-grid">
               <div className="profile-info-item">
                 <User size={18} className="info-icon" />

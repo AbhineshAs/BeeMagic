@@ -1,17 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart } from 'lucide-react';
-import { useCart } from '../context/CartContext';
+import { Link } from 'react-router-dom';
 
 export default function ShopProductCard({ product }) {
-  const { addToCart } = useCart();
-  const navigate = useNavigate();
-
-  const handleAddToCart = (e) => {
-    e.preventDefault();
-    addToCart(product);
-    navigate('/cart');
-  };
-
   return (
     <div className="shop-product-card">
       <Link to={`/product/${product.id}`} className="spc-image-link">
@@ -25,6 +14,11 @@ export default function ShopProductCard({ product }) {
             </div>
           )}
           <img src={product.image} alt={product.title} />
+          
+          <div className="spc-rating-badge">
+            <span>{product.rating || 5}.0</span>
+            <span className="star-icon">★</span>
+          </div>
         </div>
       </Link>
       <div className="spc-info">
@@ -32,13 +26,13 @@ export default function ShopProductCard({ product }) {
           <Link to={`/product/${product.id}`}>
             <h3>{product.title}</h3>
           </Link>
-          <span className="spc-price">₹{product.price.toFixed(2)}</span>
+          <div className="spc-price-wrapper">
+            <span className="spc-price">₹{product.price.toFixed(0)}</span>
+            {product.oldPrice && (
+              <span className="spc-old-price">₹{product.oldPrice.toFixed(0)}</span>
+            )}
+          </div>
         </div>
-        <p className="spc-desc">{product.description}</p>
-        <button className="spc-add-btn" onClick={handleAddToCart}>
-          <ShoppingCart size={16} />
-          ADD TO CART
-        </button>
       </div>
     </div>
   );

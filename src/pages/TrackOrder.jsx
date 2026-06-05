@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { MapPin, Truck, Check, HelpCircle, Package, Clock, ArrowLeft, Loader, Star } from 'lucide-react';
+import { MapPin, Truck, Check, HelpCircle, Package, Clock, ArrowLeft, Loader, Star, X } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
@@ -207,8 +207,18 @@ export default function TrackOrder() {
 
   // Calculate prices if active order exists
   const itemsSubtotal = activeOrder?.items?.reduce((sum, item) => sum + (item.price * item.quantity), 0) || 0;
-  const estimatedTax = itemsSubtotal * 0.08;
-  const estimatedShipping = activeOrder?.items?.length > 0 ? 40.00 : 0.00;
+  
+  // Handle legacy orders and discount gracefully
+  const difference = (activeOrder?.totalAmount || 0) - itemsSubtotal;
+  let estimatedTax = 0;
+  let estimatedShipping = 0;
+  let discount = 0;
+  if (difference > 0.01) {
+    estimatedTax = itemsSubtotal * 0.08;
+    estimatedShipping = Math.max(0, activeOrder.totalAmount - itemsSubtotal - estimatedTax);
+  } else if (difference < -0.01) {
+    discount = Math.abs(difference);
+  }
 
   return (
     <div className="track-order-page">
@@ -601,14 +611,29 @@ export default function TrackOrder() {
                     <span>Items Subtotal</span>
                     <span>₹{itemsSubtotal.toFixed(2)}</span>
                   </div>
-                  <div className="summary-row">
-                    <span>Shipping fee</span>
-                    <span>₹{estimatedShipping.toFixed(2)}</span>
-                  </div>
-                  <div className="summary-row">
-                    <span>Estimated Tax (8%)</span>
-                    <span>₹{estimatedTax.toFixed(2)}</span>
-                  </div>
+                  {estimatedShipping > 0 ? (
+                    <div className="summary-row">
+                      <span>Shipping fee</span>
+                      <span>₹{estimatedShipping.toFixed(2)}</span>
+                    </div>
+                  ) : (
+                    <div className="summary-row">
+                      <span>Shipping fee</span>
+                      <span style={{ color: '#2e7d32', fontWeight: 600 }}>FREE</span>
+                    </div>
+                  )}
+                  {discount > 0 && (
+                    <div className="summary-row">
+                      <span>Special Offer</span>
+                      <span style={{ color: '#2e7d32', fontWeight: 600 }}>-₹{discount.toFixed(2)}</span>
+                    </div>
+                  )}
+                  {estimatedTax > 0 && (
+                    <div className="summary-row">
+                      <span>Estimated Tax (8%)</span>
+                      <span>₹{estimatedTax.toFixed(2)}</span>
+                    </div>
+                  )}
                   <div className="summary-row total">
                     <span>Total Paid</span>
                     <span className="gold-text">₹{(activeOrder.totalAmount || 0).toFixed(2)}</span>

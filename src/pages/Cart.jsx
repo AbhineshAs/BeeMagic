@@ -10,9 +10,10 @@ export default function Cart() {
   const { cart, removeFromCart, updateQuantity } = useCart();
 
   const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-  const shipping = cart.length > 0 ? 40.00 : 0.00;
-  const taxes = subtotal * 0.08;
-  const total = subtotal + shipping + taxes;
+  const shipping = 0.00;
+  const taxes = 0.00;
+  const discount = cart.length > 0 ? 50.00 : 0.00;
+  const total = Math.max(0, subtotal - discount);
 
   // Recommendations (taking first 4 products for demo)
   const recommendations = products.slice(0, 4);
@@ -89,13 +90,21 @@ export default function Cart() {
                   <span>₹{subtotal.toFixed(2)}</span>
                 </div>
                 <div className="summary-row">
-                  <span>Flat Shipping Rate</span>
-                  <span>₹{shipping.toFixed(2)}</span>
+                  <span>Shipping</span>
+                  <span style={{ color: '#2e7d32', fontWeight: 600 }}>FREE</span>
                 </div>
-                <div className="summary-row">
-                  <span>Taxes</span>
-                  <span>₹{taxes.toFixed(2)}</span>
-                </div>
+                {discount > 0 && (
+                  <div className="summary-row">
+                    <span>Special Offer</span>
+                    <span style={{ color: '#2e7d32', fontWeight: 600 }}>-₹{discount.toFixed(2)}</span>
+                  </div>
+                )}
+                {taxes > 0 && (
+                  <div className="summary-row">
+                    <span>Taxes</span>
+                    <span>₹{taxes.toFixed(2)}</span>
+                  </div>
+                )}
               </div>
 
               <div className="total-amount-box">

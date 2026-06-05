@@ -38,9 +38,10 @@ export default function Checkout() {
   const [qrTimer, setQrTimer] = useState(300); // 5 minutes in seconds
 
   const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-  const shipping = cart.length > 0 ? 40.00 : 0.00; 
-  const taxes = subtotal * 0.08;
-  const total = subtotal + shipping + taxes;
+  const shipping = 0.00; 
+  const taxes = 0.00;
+  const discount = cart.length > 0 ? 50.00 : 0.00;
+  const total = Math.max(0, subtotal - discount);
 
   // Countdown timer for QR Code step
   useEffect(() => {
@@ -330,12 +331,20 @@ export default function Checkout() {
                 </div>
                 <div className="summary-row">
                   <span>Shipping</span>
-                  <span>₹{shipping.toFixed(2)}</span>
+                  <span style={{ color: '#2e7d32', fontWeight: 600 }}>FREE</span>
                 </div>
-                <div className="summary-row">
-                  <span>Estimated Taxes</span>
-                  <span>₹{taxes.toFixed(2)}</span>
-                </div>
+                {discount > 0 && (
+                  <div className="summary-row">
+                    <span>Special Offer</span>
+                    <span style={{ color: '#2e7d32', fontWeight: 600 }}>-₹{discount.toFixed(2)}</span>
+                  </div>
+                )}
+                {taxes > 0 && (
+                  <div className="summary-row">
+                    <span>Estimated Taxes</span>
+                    <span>₹{taxes.toFixed(2)}</span>
+                  </div>
+                )}
                 <div className="summary-row total">
                   <span>Order Total</span>
                   <span className="final-price">₹{total.toFixed(2)}</span>

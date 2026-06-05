@@ -14,6 +14,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import MockGoogleLogin from './pages/MockGoogleLogin';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
+import MobileBottomNav from './components/MobileBottomNav';
 import './App.css';
 
 // ScrollRevealManager handles page-reveal animations and auto-scrolling to top on navigation
@@ -120,6 +121,7 @@ function App() {
         />
         <Route path="/mock-google-login" element={<MockGoogleLogin />} />
       </Routes>
+      <MobileBottomNav />
     </Router>
   );
 }
