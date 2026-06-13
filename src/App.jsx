@@ -15,6 +15,7 @@ import MockGoogleLogin from './pages/MockGoogleLogin';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import MobileBottomNav from './components/MobileBottomNav';
+import API_URL from './config/api';
 import './App.css';
 
 // ScrollRevealManager handles page-reveal animations and auto-scrolling to top on navigation
@@ -84,7 +85,7 @@ function ScrollRevealManager() {
 
 function App() {
   useEffect(() => {
-    fetch('/api/test')
+    fetch(`${API_URL}/api/test`)
       .then(res => res.json())
       .then(data => console.log('Backend connection test:', data))
       .catch(err => console.error('Failed to connect to backend:', err));

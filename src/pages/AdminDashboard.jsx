@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import API_URL from '../config/api';
 
 export default function AdminDashboard() {
   const { user } = useAuth();
@@ -82,10 +83,10 @@ export default function AdminDashboard() {
     try {
       const headers = { 'X-User-Role': user?.role };
       const [prodRes, orderRes, countRes, revRes] = await Promise.all([
-        fetch('/api/products'),
-        fetch('/api/orders/all', { headers }),
-        fetch('/api/auth/users/count'),
-        fetch('/api/reviews')
+        fetch(`${API_URL}/api/products`),
+        fetch(`${API_URL}/api/orders/all`, { headers }),
+        fetch(`${API_URL}/api/auth/users/count`),
+        fetch(`${API_URL}/api/reviews`)
       ]);
 
       if (prodRes.ok) {
@@ -176,7 +177,7 @@ export default function AdminDashboard() {
         const formData = new FormData();
         formData.append('file', imageFile);
 
-        const uploadRes = await fetch('/api/upload', {
+        const uploadRes = await fetch(`${API_URL}/api/upload`, {
           method: 'POST',
           body: formData
         });
@@ -199,7 +200,7 @@ export default function AdminDashboard() {
 
       if (editingProduct) {
         // Edit Mode
-        const response = await fetch(`/api/products/${editingProduct.id}`, {
+        const response = await fetch(`${API_URL}/api/products/${editingProduct.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -224,7 +225,7 @@ export default function AdminDashboard() {
         }
       } else {
         // Add Mode
-        const response = await fetch('/api/products', {
+        const response = await fetch(`${API_URL}/api/products`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -259,7 +260,7 @@ export default function AdminDashboard() {
     if (!window.confirm("Are you sure you want to remove this product? It will be gone from the shop immediately.")) return;
 
     try {
-      const response = await fetch(`/api/products/${id}`, {
+      const response = await fetch(`${API_URL}/api/products/${id}`, {
         method: 'DELETE',
         headers: { 'X-User-Role': user?.role }
       });
@@ -277,7 +278,7 @@ export default function AdminDashboard() {
     if (!window.confirm("Are you sure you want to delete this customer review?")) return;
 
     try {
-      const response = await fetch(`/api/reviews/${id}`, {
+      const response = await fetch(`${API_URL}/api/reviews/${id}`, {
         method: 'DELETE',
         headers: { 'X-User-Role': user?.role }
       });
@@ -296,7 +297,7 @@ export default function AdminDashboard() {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      const response = await fetch(`/api/orders/${orderId}/status`, {
+      const response = await fetch(`${API_URL}/api/orders/${orderId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

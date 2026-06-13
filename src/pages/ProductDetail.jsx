@@ -6,9 +6,10 @@ import { ShoppingCart, Star, ChevronDown, ChevronUp, Truck, ShieldCheck, Heart }
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ShopProductCard from '../components/ShopProductCard';
+import API_URL from '../config/api';
 
 export default function ProductDetail() {
-  const { id } = useParams();
+  const id = useParams().id;
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -36,7 +37,7 @@ export default function ProductDetail() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/products/${id}`)
+    fetch(`${API_URL}/api/products/${id}`)
       .then(res => res.json())
       .then(data => {
         setProduct(data);
@@ -48,7 +49,7 @@ export default function ProductDetail() {
       });
 
     // Fetch reviews
-    fetch(`/api/reviews/product/${id}`)
+    fetch(`${API_URL}/api/reviews/product/${id}`)
       .then(res => res.json())
       .then(data => {
         setReviewsList(data);
@@ -58,7 +59,7 @@ export default function ProductDetail() {
       });
 
     // Fetch related products (using all products as pool)
-    fetch('/api/products')
+    fetch(`${API_URL}/api/products`)
       .then(res => res.json())
       .then(data => {
         setRelatedProducts(data.filter(p => String(p.id) !== String(id)).slice(0, 4));

@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
+import API_URL from '../config/api';
 
 const CartContext = createContext();
 
@@ -9,7 +10,7 @@ export const CartProvider = ({ children }) => {
 
   useEffect(() => {
     if (isAuthenticated && user?.id) {
-      fetch(`/api/cart/${user.id}`)
+      fetch(`${API_URL}/api/cart/${user.id}`)
         .then(res => res.json())
         .then(data => setCart(data))
         .catch(err => console.error("Failed to load cart", err));
@@ -24,7 +25,7 @@ export const CartProvider = ({ children }) => {
       return;
     }
     try {
-      const response = await fetch(`/api/cart/${user.id}`, {
+      const response = await fetch(`${API_URL}/api/cart/${user.id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -53,7 +54,7 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = async (id) => {
     if (!isAuthenticated) return;
     try {
-      await fetch(`/api/cart/${user.id}/${id}`, { method: 'DELETE' });
+      await fetch(`${API_URL}/api/cart/${user.id}/${id}`, { method: 'DELETE' });
       setCart(prevCart => prevCart.filter(item => item.id !== id));
     } catch (err) {
       console.error("Failed to remove from cart", err);
@@ -63,7 +64,7 @@ export const CartProvider = ({ children }) => {
   const updateQuantity = async (id, quantity) => {
     if (!isAuthenticated || quantity < 1) return;
     try {
-      const response = await fetch(`/api/cart/${user.id}/${id}`, {
+      const response = await fetch(`${API_URL}/api/cart/${user.id}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ quantity })
@@ -80,7 +81,7 @@ export const CartProvider = ({ children }) => {
   const clearCart = async () => {
     if (!isAuthenticated) return;
     try {
-      await fetch(`/api/cart/${user.id}/clear`, { method: 'DELETE' });
+      await fetch(`${API_URL}/api/cart/${user.id}/clear`, { method: 'DELETE' });
       setCart([]);
     } catch (err) {
       console.error("Failed to clear cart", err);

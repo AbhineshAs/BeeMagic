@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Lock, CreditCard, ChevronDown, Check } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import API_URL from '../config/api';
 
 export default function Checkout() {
   const { cart, cartCount, clearCart } = useCart();
@@ -96,7 +97,7 @@ export default function Checkout() {
 
       setIsProcessing(true);
       try {
-        const response = await fetch(`/api/orders/${user.id}`, {
+        const response = await fetch(`${API_URL}/api/orders/${user.id}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

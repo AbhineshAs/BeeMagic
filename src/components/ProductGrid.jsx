@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Star, ShoppingCart } from 'lucide-react';
 import { products as fallbackProducts } from '../data/products';
 import { useCart } from '../context/CartContext';
+import API_URL from '../config/api';
 
 export default function ProductGrid() {
   const [products, setProducts] = useState(fallbackProducts);
@@ -10,7 +11,7 @@ export default function ProductGrid() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('/api/products')
+    fetch(`${API_URL}/api/products`)
       .then((res) => {
         if (!res.ok) throw new Error('API error');
         return res.json();

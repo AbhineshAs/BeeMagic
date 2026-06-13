@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import API_URL from '../config/api';
 
 const testimonials = [
   {
@@ -33,12 +34,12 @@ export default function BestSellers() {
     const loadReviewsAndProducts = async () => {
       try {
         // Fetch all products so we can look up their titles
-        const prodRes = await fetch('/api/products');
+        const prodRes = await fetch(`${API_URL}/api/products`);
         if (!prodRes.ok) throw new Error("Failed to fetch products");
         const prodData = await prodRes.json();
 
         // Fetch all user-submitted reviews
-        const revRes = await fetch('/api/reviews');
+        const revRes = await fetch(`${API_URL}/api/reviews`);
         if (!revRes.ok) throw new Error("Failed to fetch reviews");
         const revData = await revRes.json();
 

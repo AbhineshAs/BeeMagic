@@ -4,6 +4,7 @@ import { MapPin, Truck, Check, HelpCircle, Package, Clock, ArrowLeft, Loader, St
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 export default function TrackOrder() {
   const { user, isAuthenticated } = useAuth();
@@ -34,7 +35,7 @@ export default function TrackOrder() {
 
     setSubmittingReview(prev => ({ ...prev, [productId]: true }));
     try {
-      const response = await fetch('/api/reviews', {
+      const response = await fetch(`${API_URL}/api/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -64,7 +65,7 @@ export default function TrackOrder() {
   useEffect(() => {
     if (isAuthenticated && user?.id) {
       setLoading(true);
-      fetch(`/api/orders/user/${user.id}`)
+      fetch(`${API_URL}/api/orders/user/${user.id}`)
         .then(res => {
           if (!res.ok) throw new Error("Failed to load orders");
           return res.json();
@@ -99,7 +100,7 @@ export default function TrackOrder() {
     }
 
     try {
-      const response = await fetch(`/api/orders/${orderId}/cancel`, {
+      const response = await fetch(`${API_URL}/api/orders/${orderId}/cancel`, {
         method: 'PUT',
         headers: {
           'X-User-Id': user?.id,
