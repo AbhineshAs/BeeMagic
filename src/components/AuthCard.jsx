@@ -139,14 +139,23 @@ export default function AuthCard() {
 
     try {
       if (isLogin) {
-        await login(email, password);
+        const userData = await login(email, password);
+        if (userData && userData.role === 'ADMIN') {
+          navigate('/admin');
+        } else {
+          navigate(-1);
+        }
       } else {
         if (!otpSent) {
           throw new Error('Please click Send OTP and verify your phone number first.');
         }
-        await register(name, address, email, phoneNumber, password, otp);
+        const userData = await register(name, address, email, phoneNumber, password, otp);
+        if (userData && userData.role === 'ADMIN') {
+          navigate('/admin');
+        } else {
+          navigate(-1);
+        }
       }
-      navigate(-1);
     } catch (err) {
       setError(err.message);
     } finally {
