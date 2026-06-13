@@ -4,6 +4,7 @@ import { MapPin, Truck, Check, HelpCircle, Package, Clock, ArrowLeft, Loader, St
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
+import API_URL, { formatImageUrl } from '../config/api';
 
 export default function TrackOrder() {
   const { user, isAuthenticated } = useAuth();
@@ -34,7 +35,7 @@ export default function TrackOrder() {
 
     setSubmittingReview(prev => ({ ...prev, [productId]: true }));
     try {
-      const response = await fetch('/api/reviews', {
+      const response = await fetch(`${API_URL}/api/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -64,7 +65,7 @@ export default function TrackOrder() {
   useEffect(() => {
     if (isAuthenticated && user?.id) {
       setLoading(true);
-      fetch(`/api/orders/user/${user.id}`)
+      fetch(`${API_URL}/api/orders/user/${user.id}`)
         .then(res => {
           if (!res.ok) throw new Error("Failed to load orders");
           return res.json();
@@ -99,7 +100,7 @@ export default function TrackOrder() {
     }
 
     try {
-      const response = await fetch(`/api/orders/${orderId}/cancel`, {
+      const response = await fetch(`${API_URL}/api/orders/${orderId}/cancel`, {
         method: 'PUT',
         headers: {
           'X-User-Id': user?.id,
@@ -258,7 +259,7 @@ export default function TrackOrder() {
                             item.image && (
                               <img 
                                 key={idx} 
-                                src={item.image} 
+                                src={formatImageUrl(item.image)} 
                                 alt={item.name} 
                                 style={{ width: '45px', height: '45px', borderRadius: '10px', objectFit: 'cover', border: '1px solid #efebe9', boxShadow: '0 2px 8px rgba(93, 64, 55, 0.08)' }} 
                                 title={item.name}
@@ -529,7 +530,7 @@ export default function TrackOrder() {
                           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                             {item.image && (
                               <div className="item-thumb" style={{ width: '50px', height: '50px', borderRadius: '8px', overflow: 'hidden' }}>
-                                <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                <img src={formatImageUrl(item.image)} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                               </div>
                             )}
                             <div>

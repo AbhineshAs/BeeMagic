@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import API_URL, { formatImageUrl } from '../config/api';
 
 export default function AdminDashboard() {
   const { user } = useAuth();
@@ -82,10 +83,10 @@ export default function AdminDashboard() {
     try {
       const headers = { 'X-User-Role': user?.role };
       const [prodRes, orderRes, countRes, revRes] = await Promise.all([
-        fetch('/api/products'),
-        fetch('/api/orders/all', { headers }),
-        fetch('/api/auth/users/count'),
-        fetch('/api/reviews')
+        fetch(`${API_URL}/api/products`),
+        fetch(`${API_URL}/api/orders/all`, { headers }),
+        fetch(`${API_URL}/api/auth/users/count`),
+        fetch(`${API_URL}/api/reviews`)
       ]);
 
       if (prodRes.ok) {
@@ -176,7 +177,7 @@ export default function AdminDashboard() {
         const formData = new FormData();
         formData.append('file', imageFile);
 
-        const uploadRes = await fetch('/api/upload', {
+        const uploadRes = await fetch(`${API_URL}/api/upload`, {
           method: 'POST',
           body: formData
         });
@@ -199,7 +200,7 @@ export default function AdminDashboard() {
 
       if (editingProduct) {
         // Edit Mode
-        const response = await fetch(`/api/products/${editingProduct.id}`, {
+        const response = await fetch(`${API_URL}/api/products/${editingProduct.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -224,7 +225,7 @@ export default function AdminDashboard() {
         }
       } else {
         // Add Mode
-        const response = await fetch('/api/products', {
+        const response = await fetch(`${API_URL}/api/products`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -259,7 +260,7 @@ export default function AdminDashboard() {
     if (!window.confirm("Are you sure you want to remove this product? It will be gone from the shop immediately.")) return;
 
     try {
-      const response = await fetch(`/api/products/${id}`, {
+      const response = await fetch(`${API_URL}/api/products/${id}`, {
         method: 'DELETE',
         headers: { 'X-User-Role': user?.role }
       });
@@ -277,7 +278,7 @@ export default function AdminDashboard() {
     if (!window.confirm("Are you sure you want to delete this customer review?")) return;
 
     try {
-      const response = await fetch(`/api/reviews/${id}`, {
+      const response = await fetch(`${API_URL}/api/reviews/${id}`, {
         method: 'DELETE',
         headers: { 'X-User-Role': user?.role }
       });
@@ -296,7 +297,7 @@ export default function AdminDashboard() {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      const response = await fetch(`/api/orders/${orderId}/status`, {
+      const response = await fetch(`${API_URL}/api/orders/${orderId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -737,7 +738,7 @@ export default function AdminDashboard() {
 
                   {previewUrl && (
                     <div style={{ position: 'relative', marginTop: '1rem' }}>
-                      <img src={previewUrl} alt="Preview" style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '10px' }} />
+                      <img src={formatImageUrl(previewUrl)} alt="Preview" style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '10px' }} />
                       <button
                         type="button"
                         onClick={() => {
@@ -780,7 +781,7 @@ export default function AdminDashboard() {
                 {sortedProducts.slice(0, 4).map(product => (
                   <tr key={product.id} style={{ borderBottom: '1px solid #f9f9f9' }}>
                     <td style={{ padding: '1rem 0' }}>
-                      <img src={product.image} alt="" style={{ width: '40px', height: '40px', borderRadius: '8px', objectFit: 'cover' }} />
+                      <img src={formatImageUrl(product.image)} alt="" style={{ width: '40px', height: '40px', borderRadius: '8px', objectFit: 'cover' }} />
                     </td>
                     <td style={{ padding: '1rem 0', fontWeight: 600, color: '#3e2723' }}>{product.title}</td>
                     <td style={{ padding: '1rem 0', color: '#795548', fontWeight: 700 }}>₹{(product.price || 0).toFixed(2)}</td>
@@ -1184,7 +1185,7 @@ export default function AdminDashboard() {
                       {filteredProducts.map(product => (
                         <tr key={product.id} style={{ borderBottom: '1px solid #f9f9f9' }}>
                           <td style={{ padding: '1rem 0' }}>
-                            <img src={product.image} alt="" style={{ width: '40px', height: '40px', borderRadius: '8px', objectFit: 'cover' }} />
+                            <img src={formatImageUrl(product.image)} alt="" style={{ width: '40px', height: '40px', borderRadius: '8px', objectFit: 'cover' }} />
                           </td>
                           <td style={{ padding: '1rem 0', fontWeight: 600, color: '#3e2723' }}>{product.title}</td>
                           <td style={{ padding: '1rem 0', color: '#8d6e63', fontSize: '0.85rem' }}>{product.collection || 'ARTISANAL PURE HONEY'}</td>

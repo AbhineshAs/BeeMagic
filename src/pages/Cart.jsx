@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { formatImageUrl } from '../config/api';
 import { Minus, Plus, Trash2, Heart, Lock, Truck, CreditCard } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -34,7 +35,7 @@ export default function Cart() {
               {cart.length > 0 ? cart.map((item, index) => (
                 <div key={index} className="cart-item-card">
                   <div className="item-image">
-                    <img src={item.image} alt={item.title || item.name} />
+                    <img src={formatImageUrl(item.image)} alt={item.title || item.name} />
                   </div>
                   <div className="item-info">
                     <div className="item-header">

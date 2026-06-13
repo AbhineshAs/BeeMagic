@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Droplet, Leaf, Shield, Sparkles } from 'lucide-react';
+import { AlignCenter, Droplet, Leaf, Shield, Sparkles } from 'lucide-react';
 import rawHoneyImage from '../assets/salah-ait-mokhtar-fvLHfyBkKQM-unsplash.jpg';
 import ethicalImage from '../assets/shelby-cohron-UQwbKtu-2Ek-unsplash.jpg';
 import Sustainable from '../assets/with-mahdy-FiksIuf61h0-unsplash.jpg';
@@ -107,7 +107,7 @@ export default function Features() {
     <section className="features-path-section">
       <div className="features-path-header reveal-on-scroll slide-up">
         <h2 className="section-title">OUR ARTISANAL STANDARDS</h2>
-        <p className="section-subtitle">Crafted with care, guided by nature</p>
+        <p className="section-subtitle" style={{ textAlign: 'center' }}>Crafted with care, guided by nature</p>
       </div>
 
       <div className="features-path-container" ref={containerRef}>

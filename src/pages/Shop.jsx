@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Search, SlidersHorizontal, ChevronDown } from 'lucide-react';
+import API_URL from '../config/api';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ShopProductCard from '../components/ShopProductCard';
@@ -13,7 +14,7 @@ export default function Shop() {
   const [activeCategory, setActiveCategory] = useState('all');
 
   useEffect(() => {
-    fetch('/api/products')
+    fetch(`${API_URL}/api/products`)
       .then(res => res.json())
       .then(data => {
         setProducts(data);
