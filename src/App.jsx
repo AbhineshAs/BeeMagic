@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import API_URL from './config/api';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Shop from './pages/Shop';
@@ -85,7 +84,7 @@ function ScrollRevealManager() {
 
 function App() {
   useEffect(() => {
-    fetch(`${API_URL}/api/test`)
+    fetch('/api/test')
       .then(res => res.json())
       .then(data => console.log('Backend connection test:', data))
       .catch(err => console.error('Failed to connect to backend:', err));

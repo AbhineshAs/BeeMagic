@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { formatImageUrl } from '../config/api';
 
 export default function ShopProductCard({ product }) {
   return (
@@ -14,7 +13,7 @@ export default function ShopProductCard({ product }) {
               {product.badge}
             </div>
           )}
-          <img src={formatImageUrl(product.image)} alt={product.title} />
+          <img src={product.image} alt={product.title} />
           
           <div className="spc-rating-badge">
             <span>{product.rating || 5}.0</span>

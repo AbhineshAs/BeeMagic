@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import API_URL, { formatImageUrl } from '../config/api';
 import { Lock, CreditCard, ChevronDown, Check } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -97,7 +96,7 @@ export default function Checkout() {
 
       setIsProcessing(true);
       try {
-        const response = await fetch(`${API_URL}/api/orders/${user.id}`, {
+        const response = await fetch(`/api/orders/${user.id}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -312,7 +311,7 @@ export default function Checkout() {
                 {cart.length > 0 ? cart.map((item, index) => (
                   <div key={index} className="summary-item">
                     <div className="item-img">
-                      <img src={formatImageUrl(item.image)} alt={item.title || item.name} />
+                      <img src={item.image} alt={item.title || item.name} />
                     </div>
                     <div className="item-details">
                       <h4>{item.title || item.name}</h4>

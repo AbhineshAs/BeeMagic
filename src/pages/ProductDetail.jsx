@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import API_URL, { formatImageUrl } from '../config/api';
 import { ShoppingCart, Star, ChevronDown, ChevronUp, Truck, ShieldCheck, Heart } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -37,7 +36,7 @@ export default function ProductDetail() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${API_URL}/api/products/${id}`)
+    fetch(`/api/products/${id}`)
       .then(res => res.json())
       .then(data => {
         setProduct(data);
@@ -49,7 +48,7 @@ export default function ProductDetail() {
       });
 
     // Fetch reviews
-    fetch(`${API_URL}/api/reviews/product/${id}`)
+    fetch(`/api/reviews/product/${id}`)
       .then(res => res.json())
       .then(data => {
         setReviewsList(data);
@@ -59,7 +58,7 @@ export default function ProductDetail() {
       });
 
     // Fetch related products (using all products as pool)
-    fetch(`${API_URL}/api/products`)
+    fetch('/api/products')
       .then(res => res.json())
       .then(data => {
         setRelatedProducts(data.filter(p => String(p.id) !== String(id)).slice(0, 4));
@@ -137,10 +136,10 @@ export default function ProductDetail() {
                     <span className="detail-badge white">Limited Edition</span>
                   </div>
                 )}
-                <img src={formatImageUrl(product.image)} alt={product.title} />
+                <img src={product.image} alt={product.title} />
               </div>
               <div className="thumbnail-grid">
-                <div className="thumbnail active"><img src={formatImageUrl(product.image)} alt="thumb" /></div>
+                <div className="thumbnail active"><img src={product.image} alt="thumb" /></div>
                 <div className="thumbnail"><img src="https://images.unsplash.com/photo-1558583082-409143c7c9f8?w=200" alt="thumb" /></div>
                 <div className="thumbnail"><img src="https://images.unsplash.com/photo-1587049352851-8d4e891347d4?w=200" alt="thumb" /></div>
                 <div className="thumbnail"><img src="https://images.unsplash.com/photo-1596704017254-9b121068fb31?w=200" alt="thumb" /></div>

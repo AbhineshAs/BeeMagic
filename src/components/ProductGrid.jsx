@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Star, ShoppingCart } from 'lucide-react';
 import { products as fallbackProducts } from '../data/products';
 import { useCart } from '../context/CartContext';
-import API_URL, { formatImageUrl } from '../config/api';
 
 export default function ProductGrid() {
   const [products, setProducts] = useState(fallbackProducts);
@@ -11,7 +10,7 @@ export default function ProductGrid() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`${API_URL}/api/products`)
+    fetch('/api/products')
       .then((res) => {
         if (!res.ok) throw new Error('API error');
         return res.json();
@@ -44,7 +43,7 @@ export default function ProductGrid() {
           <div key={product.id} className={`dribbble-product-card reveal-on-scroll slide-up delay-${(index + 1) * 100}`}>
             <Link to={`/product/${product.id}`} className="card-image-link">
               <div className="card-image-wrapper">
-                <img src={formatImageUrl(product.image)} alt={product.title} />
+                <img src={product.image} alt={product.title} />
               </div>
             </Link>
             <div className="card-details">
