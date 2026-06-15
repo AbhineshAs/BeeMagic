@@ -321,16 +321,6 @@ export default function AuthCard() {
         </button>
       </form>
 
-      <div className="auth-divider">
-        <span>Or continue with</span>
-      </div>
-
-      <div className="social-login">
-        <button type="button" className="social-button" onClick={() => handleSocialClick('Google')}>
-          <GoogleIcon />
-          Google
-        </button>
-      </div>
     </div>
   );
 }
