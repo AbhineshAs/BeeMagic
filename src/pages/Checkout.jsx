@@ -29,7 +29,6 @@ export default function Checkout() {
   const discount = cart.length > 0 ? 50.00 : 0.00;
   const total = Math.max(0, subtotal - discount);
 
-  // Razorpay Loader
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
       if (window.Razorpay) {
@@ -46,7 +45,7 @@ export default function Checkout() {
   };
 
   const handleCheckoutSubmit = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (!isAuthenticated) {
       alert("Please log in to complete your order.");
       return;
@@ -62,24 +61,23 @@ export default function Checkout() {
     }
 
     setIsProcessing(true);
-    const scriptLoaded = await loadRazorpayScript();
-    if (!scriptLoaded) {
-      alert("Razorpay SDK failed to load. Please check your internet connection.");
+
+    const loaded = await loadRazorpayScript();
+    if (!loaded) {
+      alert("Failed to load Razorpay SDK. Please check your internet connection.");
       setIsProcessing(false);
       return;
     }
 
-    const fullAddress = `${shippingInfo.firstName} ${shippingInfo.lastName}, ${shippingInfo.street}, ${shippingInfo.city}, ${shippingInfo.state} - ${shippingInfo.zipCode}`;
-
     const options = {
-      key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_5n4q8wJjM9V6Y1', // Test Key ID as default fallback
-      amount: Math.round(total * 100), // amount in paise
-      currency: 'INR',
-      name: 'Bee Magic',
-      description: 'Artisanal Honey & Wellness Products',
-      image: '/favicon.svg',
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_5m1p3n4M5rP6qQ',
+      amount: Math.round(total * 100),
+      currency: "INR",
+      name: "Bee Magic",
+      description: "Order Checkout",
+      image: "/favicon.svg",
       handler: async function (response) {
-        setIsProcessing(true);
+        const fullAddress = `${shippingInfo.firstName} ${shippingInfo.lastName}, ${shippingInfo.street}, ${shippingInfo.city}, ${shippingInfo.state} - ${shippingInfo.zipCode}`;
         try {
           const orderResponse = await fetch(`${API_URL}/api/orders/${user.id}`, {
             method: 'POST',
@@ -104,7 +102,7 @@ export default function Checkout() {
             alert("Order placed successfully! Payment verified via Razorpay.");
             navigate('/track-order');
           } else {
-            alert("Failed to place order on server. Please contact support with payment ID: " + response.razorpay_payment_id);
+            alert("Failed to save order on backend, but payment succeeded. Payment ID: " + response.razorpay_payment_id);
           }
         } catch (err) {
           console.error("Order error:", err);
@@ -115,11 +113,14 @@ export default function Checkout() {
       },
       prefill: {
         name: `${shippingInfo.firstName} ${shippingInfo.lastName}`,
-        email: user.email || '',
-        contact: user.phoneNumber || ''
+        email: user.email,
+        contact: user.phone || ''
+      },
+      notes: {
+        address: `${shippingInfo.street}, ${shippingInfo.city}, ${shippingInfo.state} - ${shippingInfo.zipCode}`
       },
       theme: {
-        color: '#d97706'
+        color: "#d97706"
       },
       modal: {
         ondismiss: function () {
@@ -131,7 +132,6 @@ export default function Checkout() {
     const rzp = new window.Razorpay(options);
     rzp.open();
   };
-
 
   return (
     <div className="checkout-page">
