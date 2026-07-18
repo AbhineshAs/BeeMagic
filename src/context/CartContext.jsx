@@ -6,17 +6,30 @@ const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { user, isAuthenticated } = useAuth();
 
-  useEffect(() => {
+  const fetchCart = async () => {
     if (isAuthenticated && user?.id) {
-      fetch(`${API_URL}/api/cart/${user.id}`)
-        .then(res => res.json())
-        .then(data => setCart(data))
-        .catch(err => console.error("Failed to load cart", err));
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${API_URL}/api/cart/${user.id}`);
+        if (response.ok) {
+          const data = await response.json();
+          setCart(data);
+        }
+      } catch (err) {
+        console.error("Failed to load cart", err);
+      } finally {
+        setIsLoading(false);
+      }
     } else {
       setCart([]);
     }
+  };
+
+  useEffect(() => {
+    fetchCart();
   }, [isAuthenticated, user]);
 
   const addToCart = async (product, quantity = 1) => {
@@ -93,6 +106,8 @@ export const CartProvider = ({ children }) => {
   return (
     <CartContext.Provider value={{ 
       cart, 
+      isLoading,
+      fetchCart,
       addToCart, 
       removeFromCart, 
       updateQuantity, 

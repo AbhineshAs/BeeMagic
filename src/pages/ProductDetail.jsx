@@ -105,14 +105,22 @@ export default function ProductDetail() {
     navigate('/cart');
   };
 
-  const handleBuyNow = async () => {
+  const handleBuyNow = () => {
     if (!isAuthenticated) {
       alert("Please log in to complete your purchase.");
       navigate('/login');
       return;
     }
-    await addToCart(product, quantity);
-    navigate('/checkout');
+    
+    const buyNowItem = {
+      productId: String(product.id),
+      name: product.title || product.name || 'Product',
+      price: product.price,
+      image: product.image,
+      quantity: quantity
+    };
+
+    navigate('/checkout', { state: { buyNowItem } });
   };
 
   const toggleAccordion = (id) => {

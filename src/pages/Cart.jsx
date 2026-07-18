@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { Minus, Plus, Trash2, Heart, Lock, Truck, CreditCard } from 'lucide-react';
@@ -7,7 +8,11 @@ import ShopProductCard from '../components/ShopProductCard';
 import { products } from '../data/products';
 
 export default function Cart() {
-  const { cart, removeFromCart, updateQuantity } = useCart();
+  const { cart, removeFromCart, updateQuantity, fetchCart, isLoading } = useCart();
+
+  useEffect(() => {
+    fetchCart();
+  }, []);
 
   const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
   const shipping = 0.00;
@@ -17,6 +22,20 @@ export default function Cart() {
 
   // Recommendations (taking first 4 products for demo)
   const recommendations = products.slice(0, 4);
+
+  if (isLoading) {
+    return (
+      <div className="cart-page">
+        <Navbar />
+        <main className="cart-main">
+          <div className="container" style={{ padding: '8rem 2rem', textAlign: 'center' }}>
+            <div className="loading-spinner">Gathering the harvest...</div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="cart-page">

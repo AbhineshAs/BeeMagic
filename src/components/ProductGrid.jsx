@@ -3,11 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Star, ShoppingCart } from 'lucide-react';
 import { products as fallbackProducts } from '../data/products';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import API_URL from '../config/api';
 
 export default function ProductGrid() {
   const [products, setProducts] = useState(fallbackProducts);
   const { addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,9 +28,14 @@ export default function ProductGrid() {
       });
   }, []);
 
-  const handleAddToCart = (e, product) => {
+  const handleAddToCart = async (e, product) => {
     e.preventDefault();
-    addToCart(product, 1);
+    if (!isAuthenticated) {
+      alert("Please log in to add items to your cart.");
+      navigate('/login');
+      return;
+    }
+    await addToCart(product, 1);
     navigate('/cart');
   };
 
