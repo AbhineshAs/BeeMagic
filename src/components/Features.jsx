@@ -72,17 +72,33 @@ export default function Features() {
       // Calculate Top Position of bee (y-axis)
       const topY = progress * containerHeight;
 
-      // Calculate Left Position of bee (x-axis)
-      // The timeline winds back and forth, so let's model this as a smooth sinusoidal wave!
-      // Center of container is 50%, wave oscillates by +/- 12% to follow nodes
+      // Calculate Left Position of bee (x-axis) and rotation
       const angleFreq = progress * Math.PI * 3; // 1.5 full oscillation cycles
-      const waveOffsetX = Math.sin(angleFreq) * 10; // offset percentage
-      const leftX = `calc(50% + ${waveOffsetX}%)`;
 
-      // Calculate Rotation Angle
-      // Derivative of sine wave gives cosine for tangent slope (direction of curve)
-      const slopeCos = Math.cos(angleFreq) * 1.5;
-      const deg = 90 + Math.atan(slopeCos) * (180 / Math.PI); // offset rotation to match direction of movement
+      // Check if we are on mobile/tablet screen where the timeline is aligned to the left
+      const isMobile = window.innerWidth <= 992;
+      let leftX;
+      let deg;
+
+      if (isMobile) {
+        // On mobile, the path line is at left: 35px. 
+        // We wind back and forth around the line by +/- 28px (from 7px to 63px).
+        const waveOffsetPx = Math.sin(angleFreq) * 28;
+        leftX = `calc(35px + ${waveOffsetPx}px)`;
+        
+        // Face down (180deg) and tilt based on movement direction (tangent of the wave)
+        const tilt = Math.cos(angleFreq) * 28; 
+        deg = 180 + tilt;
+      } else {
+        // Center of container is 50%, wave oscillates by +/- 10% to follow nodes
+        const waveOffsetX = Math.sin(angleFreq) * 10; // offset percentage
+        leftX = `calc(50% + ${waveOffsetX}%)`;
+
+        // Calculate Rotation Angle
+        // Derivative of sine wave gives cosine for tangent slope (direction of curve)
+        const slopeCos = Math.cos(angleFreq) * 1.5;
+        deg = 90 + Math.atan(slopeCos) * (180 / Math.PI); // offset rotation to match direction of movement
+      }
 
       setBeeStyle({
         top: `${topY}px`,

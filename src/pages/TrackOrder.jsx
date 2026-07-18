@@ -183,7 +183,7 @@ export default function TrackOrder() {
           <p style={{ color: '#8d6e63', fontSize: '1.1rem', marginBottom: '2rem', maxWidth: '500px' }}>
             Please log in to view and track your artisanal honey orders.
           </p>
-          <Link to="/login" className="primary-cta-btn" style={{ textDecoration: 'none', background: '#795548', color: 'white', padding: '0.8rem 2.5rem', borderRadius: '12px', fontWeight: 700, letterSpacing: '0.05em', boxShadow: '0 4px 15px rgba(121, 85, 72, 0.2)' }}>
+          <Link to="/login" className="primary-cta-btn" style={{ display: 'inline-block', textDecoration: 'none', background: '#795548', color: 'white', padding: '0.8rem 2.5rem', borderRadius: '12px', fontWeight: 700, letterSpacing: '0.05em', boxShadow: '0 4px 15px rgba(121, 85, 72, 0.2)' }}>
             Log In Here
           </Link>
         </main>
@@ -239,7 +239,7 @@ export default function TrackOrder() {
                 <div style={{ textAlign: 'center', padding: '4rem 2rem', background: 'rgba(255, 255, 255, 0.4)', borderRadius: '24px', backdropFilter: 'blur(20px)', border: '1px solid rgba(255, 255, 255, 0.5)' }}>
                   <p style={{ fontSize: '1.3rem', color: '#5d4037', fontWeight: 600 }}>No sweet orders found yet!</p>
                   <p style={{ color: '#8d6e63', marginTop: '0.5rem', marginBottom: '2.5rem' }}>Browse our organic collections and treat yourself to liquid gold today.</p>
-                  <Link to="/shop" className="primary-cta-btn" style={{ textDecoration: 'none', background: '#795548', color: 'white', padding: '0.9rem 2.5rem', borderRadius: '12px', fontWeight: 700 }}>
+                  <Link to="/shop" className="primary-cta-btn" style={{ display: 'inline-block', textDecoration: 'none', background: '#795548', color: 'white', padding: '0.9rem 1.8rem', borderRadius: '12px', fontWeight: 700, lineHeight: '1.4', maxWidth: '100%', boxSizing: 'border-box', textAlign: 'center' }}>
                     Shop Honey Collections
                   </Link>
                 </div>
