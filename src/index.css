@@ -20,13 +20,28 @@
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
 * {
   box-sizing: border-box;
 }
 
-html, body {
-  max-width: 100%;
-  overflow-x: hidden;
+/* Global ultra-smooth spring motion & micro-interactions */
+a, button, input, select, textarea, .card, .product-card, .shop-product-card, .blog-card, .btn-primary, .btn-outline, .node-content-card {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+button:active {
+  transform: scale(0.97) !important;
+}
+
+/* Glassmorphism smooth backdrop blur */
+.glass-panel, .hero-glass-card, .admin-add-form, .auth-card {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
 
 body {

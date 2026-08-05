@@ -103,7 +103,7 @@ export default function Features() {
         left: leftX,
         transform: `translate(-50%, -50%) rotate(${deg}deg)`,
         opacity: progress > 0.01 && progress < 0.99 ? 1 : 0,
-        transition: 'top 0.1s ease-out, left 0.1s ease-out, transform 0.1s ease-out, opacity 0.3s ease'
+        transition: 'top 0.35s cubic-bezier(0.16, 1, 0.3, 1), left 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease'
       });
     };
 
