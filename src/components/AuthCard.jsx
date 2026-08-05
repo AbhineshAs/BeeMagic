@@ -105,8 +105,8 @@ export default function AuthCard() {
   }, [login, navigate]);
 
   const handleSendOtp = async () => {
-    if (!phoneNumber) {
-      setOtpMessage('Please enter a valid phone number first.');
+    if (!email) {
+      setOtpMessage('Please enter a valid email address first.');
       return;
     }
     setOtpLoading(true);
@@ -116,12 +116,12 @@ export default function AuthCard() {
       const response = await fetch(`${API_URL}/api/auth/send-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phoneNumber })
+        body: JSON.stringify({ email, phoneNumber })
       });
       const data = await response.json();
       if (response.ok) {
         setOtpSent(true);
-        setOtpMessage(`OTP sent successfully! For demo: enter code ${data.otp}`);
+        setOtpMessage(`OTP sent to email (${email})! Demo code: ${data.otp}`);
       } else {
         setOtpMessage(data.message || 'Failed to send OTP code.');
       }
@@ -147,7 +147,7 @@ export default function AuthCard() {
         }
       } else {
         if (!otpSent) {
-          throw new Error('Please click Send OTP and verify your phone number first.');
+          throw new Error('Please click Send OTP and verify your email address first.');
         }
         const userData = await register(name, address, email, phoneNumber, password, otp);
         if (userData && userData.role === 'ADMIN') {
@@ -236,21 +236,36 @@ export default function AuthCard() {
 
             <div className="input-group">
               <label htmlFor="phoneNumber">Phone Number</label>
-              <div className="input-wrapper phone-wrapper">
+              <div className="input-wrapper">
                 <PhoneIcon />
                 <input
                   type="tel"
                   id="phoneNumber"
-                  placeholder="+1 (555) 123-4567"
+                  placeholder="+91 9061218582"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="input-group">
+              <label htmlFor="email">Email Address</label>
+              <div className="input-wrapper phone-wrapper">
+                <MailIcon />
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="alexander@beemagic.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
                 <button
                   type="button"
                   className="send-otp-btn"
                   onClick={handleSendOtp}
-                  disabled={otpLoading || !phoneNumber}
+                  disabled={otpLoading || !email}
                 >
                   {otpLoading ? 'Sending...' : 'Send OTP'}
                 </button>
