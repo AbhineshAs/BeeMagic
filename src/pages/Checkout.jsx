@@ -194,6 +194,7 @@ export default function Checkout() {
             shippingAddress: fullAddress,
             paymentMethod: 'RAZORPAY (DEMO MODE)',
             paymentId: demoPaymentId,
+            razorpayOrderId: orderId,
             items: checkoutItems.map(item => ({
               productId: String(item.productId),
               name: item.name,
@@ -245,44 +246,42 @@ export default function Checkout() {
               })
             });
 
-            if (!verifyResponse.ok) {
-              throw new Error("Payment signature verification failed.");
+            const verificationResult = await verifyResponse.json();
+
+            if (!verifyResponse.ok || verificationResult.status !== 'success') {
+              throw new Error(verificationResult.message || "Payment signature verification failed.");
             }
 
-            const verificationResult = await verifyResponse.json();
-            if (verificationResult.status === 'success') {
-              const fullAddress = `${shippingInfo.firstName} ${shippingInfo.lastName}, ${shippingInfo.street}, ${shippingInfo.city}, ${shippingInfo.state} - ${shippingInfo.zipCode}`;
-              
-              const localOrderResponse = await fetch(`${API_URL}/api/orders/${user.id}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  totalAmount: total,
-                  shippingAddress: fullAddress,
-                  paymentMethod: 'RAZORPAY',
-                  paymentId: response.razorpay_payment_id,
-                  items: checkoutItems.map(item => ({
-                    productId: String(item.productId),
-                    name: item.name,
-                    quantity: item.quantity,
-                    price: item.price,
-                    image: item.image
-                  }))
-                })
-              });
+            const fullAddress = `${shippingInfo.firstName} ${shippingInfo.lastName}, ${shippingInfo.street}, ${shippingInfo.city}, ${shippingInfo.state} - ${shippingInfo.zipCode}`;
+            
+            const localOrderResponse = await fetch(`${API_URL}/api/orders/${user.id}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                totalAmount: total,
+                shippingAddress: fullAddress,
+                paymentMethod: 'RAZORPAY',
+                paymentId: response.razorpay_payment_id,
+                razorpayOrderId: response.razorpay_order_id,
+                items: checkoutItems.map(item => ({
+                  productId: String(item.productId),
+                  name: item.name,
+                  quantity: item.quantity,
+                  price: item.price,
+                  image: item.image
+                }))
+              })
+            });
 
-              if (localOrderResponse.ok) {
-                if (!buyNowItem) {
-                  await clearCart();
-                }
-                alert("Order placed successfully! Payment verified via Razorpay.");
-                navigate('/track-order');
-              } else {
-                const errText = await localOrderResponse.text();
-                throw new Error(`Failed to place order in local database: ${errText || localOrderResponse.statusText} (${localOrderResponse.status})`);
+            if (localOrderResponse.ok) {
+              if (!buyNowItem) {
+                await clearCart();
               }
+              alert("Order placed successfully! Payment verified via Razorpay.");
+              navigate('/track-order');
             } else {
-              throw new Error("Payment verification failed.");
+              const errText = await localOrderResponse.text();
+              throw new Error(`Failed to place order in local database: ${errText || localOrderResponse.statusText} (${localOrderResponse.status})`);
             }
           } catch (err) {
             console.error("Order completion error:", err);

@@ -106,14 +106,12 @@ export default function AuthCard() {
 
   const handleSendOtp = async () => {
     if (!email) {
-      setOtpMessage('Please enter a valid email address first.');
+      setError('Please enter a valid email address first.');
       return;
     }
     setOtpLoading(true);
     setOtpMessage('');
     setError('');
-
-    const fallbackCode = String(Math.floor(100000 + Math.random() * 900000));
 
     try {
       const response = await fetch(`${API_URL}/api/auth/send-otp`, {
@@ -122,19 +120,14 @@ export default function AuthCard() {
         body: JSON.stringify({ email, phoneNumber })
       });
       const data = await response.json();
-      setOtpSent(true);
-      if (response.ok) {
-        if (data.emailSent) {
-          setOtpMessage(`OTP sent directly to your email (${email})! Please check your inbox for the 6-digit code.`);
-        } else {
-          setOtpMessage(`OTP sent to email (${email})! Code: ${data.otp || fallbackCode}`);
-        }
+      if (response.ok && data.emailSent) {
+        setOtpSent(true);
+        setOtpMessage(data.message || `OTP sent directly to your email (${email})! Please check your inbox for the 6-digit code.`);
       } else {
-        setOtpMessage(`OTP code for ${email}: ${fallbackCode}`);
+        setError(data.message || 'Failed to send OTP email. Please check your email address or SMTP configuration.');
       }
     } catch (err) {
-      setOtpSent(true);
-      setOtpMessage(`OTP code for ${email}: ${fallbackCode}`);
+      setError('Connection error. Could not send OTP email.');
     } finally {
       setOtpLoading(false);
     }
