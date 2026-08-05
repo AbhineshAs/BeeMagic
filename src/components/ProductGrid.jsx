@@ -63,7 +63,7 @@ export default function ProductGrid() {
               <Link to={`/product/${product.id}`} className="card-title-link">
                 <h4>{product.title}</h4>
               </Link>
-              <p className="card-price">₹{product.price.toFixed(2)}</p>
+              <p className="card-price">₹{Number(product.price || 0).toFixed(2)}</p>
               <button className="btn-add-to-cart" onClick={(e) => handleAddToCart(e, product)}>
                 <ShoppingCart size={15} /> Add to Cart
               </button>

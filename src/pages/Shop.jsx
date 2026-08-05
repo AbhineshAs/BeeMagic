@@ -4,10 +4,11 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ShopProductCard from '../components/ShopProductCard';
 import API_URL from '../config/api';
+import { products as fallbackProducts } from '../data/products';
 
 export default function Shop() {
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [products, setProducts] = useState(fallbackProducts);
+  const [filteredProducts, setFilteredProducts] = useState(fallbackProducts);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('best');
@@ -15,14 +16,24 @@ export default function Shop() {
 
   useEffect(() => {
     fetch(`${API_URL}/api/products`)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('API Error');
+        return res.json();
+      })
       .then(data => {
-        setProducts(data);
-        setFilteredProducts(data);
+        if (Array.isArray(data) && data.length > 0) {
+          setProducts(data);
+          setFilteredProducts(data);
+        } else {
+          setProducts(fallbackProducts);
+          setFilteredProducts(fallbackProducts);
+        }
         setLoading(false);
       })
       .catch(err => {
-        console.error("Error fetching products:", err);
+        console.warn("Error fetching products, using fallback:", err);
+        setProducts(fallbackProducts);
+        setFilteredProducts(fallbackProducts);
         setLoading(false);
       });
   }, []);

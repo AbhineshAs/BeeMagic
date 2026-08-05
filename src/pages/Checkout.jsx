@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Lock, CreditCard, ChevronDown, Check } from 'lucide-react';
+import { Lock, CreditCard, ChevronDown, Check, Plus, Minus } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import API_URL from '../config/api';
@@ -62,14 +62,36 @@ const loadRazorpayScript = () => {
 };
 
 export default function Checkout() {
-  const { cart, clearCart } = useCart();
+  const { cart, clearCart, updateQuantity, removeFromCart } = useCart();
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const buyNowItem = location.state?.buyNowItem;
+  const [buyNowItem, setBuyNowItem] = useState(location.state?.buyNowItem || null);
   const checkoutItems = buyNowItem ? [buyNowItem] : cart;
+
+  const handleDecreaseQuantity = (item) => {
+    if (buyNowItem) {
+      if (buyNowItem.quantity > 1) {
+        setBuyNowItem(prev => ({ ...prev, quantity: prev.quantity - 1 }));
+      }
+    } else {
+      if (item.quantity > 1) {
+        updateQuantity(item.id, item.quantity - 1);
+      } else {
+        removeFromCart(item.id);
+      }
+    }
+  };
+
+  const handleIncreaseQuantity = (item) => {
+    if (buyNowItem) {
+      setBuyNowItem(prev => ({ ...prev, quantity: prev.quantity + 1 }));
+    } else {
+      updateQuantity(item.id, item.quantity + 1);
+    }
+  };
 
   const [shippingInfo, setShippingInfo] = useState({
     firstName: '',
@@ -158,7 +180,42 @@ export default function Checkout() {
       }
 
       const orderData = await orderResponse.json();
-      const { orderId, keyId } = orderData;
+      const { orderId, keyId, mock } = orderData;
+
+      if (mock || !keyId || keyId === "rzp_test_demo") {
+        const fullAddress = `${shippingInfo.firstName} ${shippingInfo.lastName}, ${shippingInfo.street}, ${shippingInfo.city}, ${shippingInfo.state} - ${shippingInfo.zipCode}`;
+        const demoPaymentId = "pay_demo_" + Math.random().toString(36).substring(2, 12);
+        
+        const localOrderResponse = await fetch(`${API_URL}/api/orders/${user.id}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            totalAmount: total,
+            shippingAddress: fullAddress,
+            paymentMethod: 'RAZORPAY (DEMO MODE)',
+            paymentId: demoPaymentId,
+            items: checkoutItems.map(item => ({
+              productId: String(item.productId),
+              name: item.name,
+              quantity: item.quantity,
+              price: item.price,
+              image: item.image
+            }))
+          })
+        });
+
+        if (localOrderResponse.ok) {
+          if (!buyNowItem) {
+            await clearCart();
+          }
+          alert("Order placed successfully!");
+          navigate('/track-order');
+        } else {
+          const errText = await localOrderResponse.text();
+          throw new Error(`Failed to place order: ${errText || localOrderResponse.statusText}`);
+        }
+        return;
+      }
 
       const options = {
         key: keyId,
@@ -387,14 +444,38 @@ export default function Checkout() {
               
               <div className="summary-items">
                 {checkoutItems.length > 0 ? checkoutItems.map((item, index) => (
-                  <div key={index} className="summary-item">
-                    <div className="item-img">
-                      <img src={item.image} alt={item.title || item.name} />
+                  <div key={item.id || index} className="summary-item" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', width: '100%', marginBottom: '1rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1, minWidth: 0 }}>
+                      <div className="item-img" style={{ flexShrink: 0 }}>
+                        <img src={item.image} alt={item.title || item.name} />
+                      </div>
+                      <div className="item-details" style={{ minWidth: 0 }}>
+                        <h4 style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.title || item.name}</h4>
+                        <p>{item.subtitle || 'Boutique Selection'}</p>
+                        <span className="item-price">₹{(item.price * item.quantity).toFixed(2)}</span>
+                      </div>
                     </div>
-                    <div className="item-details">
-                      <h4>{item.title || item.name}</h4>
-                      <p>{item.subtitle || 'Boutique Selection'}</p>
-                      <span className="item-price">₹{(item.price * item.quantity).toFixed(2)}</span>
+
+                    <div className="checkout-qty-controls" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', background: '#faf8f5', border: '1px solid #d7ccc8', borderRadius: '25px', padding: '0.25rem 0.6rem', flexShrink: 0 }}>
+                      <button
+                        type="button"
+                        onClick={() => handleDecreaseQuantity(item)}
+                        style={{ background: 'white', border: '1px solid #e0d6d2', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '24px', height: '24px', borderRadius: '50%', color: '#5d4037', fontWeight: 700, padding: 0, boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}
+                        title="Decrease quantity"
+                      >
+                        <Minus size={12} />
+                      </button>
+                      <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#3e2723', minWidth: '20px', textAlign: 'center' }}>
+                        {item.quantity}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleIncreaseQuantity(item)}
+                        style={{ background: 'white', border: '1px solid #e0d6d2', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '24px', height: '24px', borderRadius: '50%', color: '#5d4037', fontWeight: 700, padding: 0, boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}
+                        title="Increase quantity"
+                      >
+                        <Plus size={12} />
+                      </button>
                     </div>
                   </div>
                 )) : (

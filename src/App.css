@@ -2401,16 +2401,164 @@ body {
 }
 
 @media (max-width: 992px) {
+  .about-hero {
+    height: auto;
+    min-height: 60vh;
+    padding: 3rem 1.5rem;
+  }
 
   .about-info-section,
-  .craft-grid,
   .team-grid {
     grid-template-columns: 1fr;
-    gap: 4rem;
+    gap: 2.5rem;
+  }
+
+  .craft-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
   }
 
   .about-info-section {
     padding: 4rem 2rem;
+  }
+
+  .about-info-section.reverse {
+    direction: ltr;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-hero {
+    min-height: 50vh;
+    padding: 2rem 1rem;
+  }
+
+  .hero-glass-card {
+    padding: 2rem 1.25rem !important;
+    border-radius: 1.25rem !important;
+  }
+
+  .hero-glass-card h1 {
+    font-size: 2.4rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .hero-glass-card p {
+    font-size: 1rem !important;
+  }
+
+  .about-info-section {
+    padding: 3rem 1rem !important;
+    gap: 2rem !important;
+  }
+
+  .info-text h2 {
+    font-size: 2rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .info-text p {
+    font-size: 0.98rem !important;
+  }
+
+  .info-text.gold-bg {
+    padding: 1.75rem 1.25rem !important;
+    border-radius: 1.25rem !important;
+  }
+
+  .info-image {
+    border-radius: 1.25rem !important;
+    aspect-ratio: 16/10 !important;
+  }
+
+  .craftsmanship-section {
+    padding: 3.5rem 1rem !important;
+  }
+
+  .craftsmanship-section h2 {
+    font-size: 2rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .craft-divider {
+    margin: 0 auto 2.5rem !important;
+  }
+
+  .craft-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+
+  .team-section {
+    padding: 3.5rem 1rem !important;
+  }
+
+  .team-header {
+    margin-bottom: 2.5rem !important;
+  }
+
+  .team-header h2 {
+    font-size: 2rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+
+  .team-member {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .member-img {
+    border-radius: 1.25rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .about-cta {
+    padding: 4rem 1.25rem !important;
+  }
+
+  .about-cta h2 {
+    font-size: 2.2rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .about-cta p {
+    font-size: 1rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .cta-actions {
+    flex-direction: column !important;
+    gap: 1rem !important;
+    width: 100% !important;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .primary-cta-btn,
+  .secondary-cta-btn {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 0.9rem 1.5rem !important;
+    font-size: 0.95rem !important;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-glass-card h1 {
+    font-size: 2rem !important;
+  }
+
+  .info-text h2,
+  .craftsmanship-section h2,
+  .team-header h2,
+  .about-cta h2 {
+    font-size: 1.75rem !important;
   }
 }
 
@@ -5557,38 +5705,180 @@ body {
 
 /* Responsive Blog Adjustments */
 @media (max-width: 768px) {
+  .blog-main {
+    padding: 1.5rem 1rem 4rem !important;
+  }
+
+  .blog-hero {
+    padding: 1.5rem 0.5rem 2rem !important;
+  }
+
   .blog-hero h1 {
-    font-size: 2.8rem;
+    font-size: 2.2rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .blog-hero p {
+    font-size: 0.98rem !important;
+  }
+
+  /* Featured Post Card */
+  .featured-post-section {
+    margin-bottom: 2.5rem !important;
   }
 
   .featured-blog-card {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+    border-radius: 1.25rem !important;
   }
 
   .featured-img-wrapper {
-    height: 250px;
+    height: 220px !important;
   }
 
   .featured-content-wrapper {
-    padding: 2rem;
+    padding: 1.5rem 1.25rem !important;
   }
 
-  .article-title {
-    font-size: 2rem;
+  .featured-blog-card h2 {
+    font-size: 1.4rem !important;
+    margin-bottom: 0.75rem !important;
+    line-height: 1.3 !important;
+  }
+
+  .featured-meta {
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+    margin-bottom: 1rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+
+  /* Category Filter Horizontal Scroll on Mobile */
+  .category-filter-section {
+    margin-bottom: 2rem !important;
+  }
+
+  .category-tabs {
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    padding: 0.25rem 0.25rem 0.75rem !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .category-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-tab-btn {
+    white-space: nowrap !important;
+    padding: 0.5rem 1.1rem !important;
+    font-size: 0.85rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Blog Grid Mobile */
+  .blog-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .blog-card {
+    border-radius: 1.25rem !important;
+  }
+
+  .blog-card-img-wrapper {
+    height: 200px !important;
+  }
+
+  .blog-card-content {
+    padding: 1.25rem !important;
+  }
+
+  .blog-card-content h3 {
+    font-size: 1.2rem !important;
+    margin-bottom: 0.5rem !important;
+    line-height: 1.35 !important;
+  }
+
+  .blog-card-content p {
+    font-size: 0.9rem !important;
+    margin-bottom: 1rem !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Full Article Reader View */
+  .blog-reader-main {
+    padding: 1.5rem 0.75rem 4rem !important;
   }
 
   .full-article {
-    padding: 2rem 1.5rem;
+    padding: 1.5rem 1.1rem !important;
+    border-radius: 1.25rem !important;
+  }
+
+  .article-category-badge {
+    margin-bottom: 1rem !important;
+  }
+
+  .article-title {
+    font-size: 1.75rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .article-meta {
+    gap: 1rem !important;
+    flex-wrap: wrap !important;
+    margin-bottom: 1.5rem !important;
+    padding-bottom: 1rem !important;
   }
 
   .article-hero-image {
-    height: 300px;
-    margin-bottom: 2rem;
+    height: 230px !important;
+    border-radius: 1rem !important;
+    margin-bottom: 1.75rem !important;
+  }
+
+  .article-body-content {
+    font-size: 0.98rem !important;
+    line-height: 1.7 !important;
+  }
+
+  .article-body-content h3 {
+    font-size: 1.35rem !important;
+    margin: 1.75rem 0 0.75rem !important;
+  }
+
+  .article-body-content h4 {
+    font-size: 1.15rem !important;
+    margin: 1.5rem 0 0.5rem !important;
+  }
+
+  .article-body-content blockquote {
+    padding: 1rem 1.25rem !important;
+    font-size: 0.95rem !important;
+    margin: 1.5rem 0 !important;
   }
 
   .related-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .related-card {
+    border-radius: 1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-hero h1 {
+    font-size: 1.85rem !important;
+  }
+
+  .article-title {
+    font-size: 1.55rem !important;
   }
 }
 
@@ -7965,39 +8255,41 @@ body {
 
   /* Add padding to page containers to prevent bottom nav coverage */
   body {
-    padding-bottom: 60px;
+    padding-bottom: calc(75px + env(safe-area-inset-bottom, 0px)) !important;
   }
 
   /* Shop page adjustments */
   .shop-list {
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 0.5rem !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
   }
 
   .shop-container {
-    padding: 1rem 0.5rem 4rem !important;
+    padding: 1rem 0.75rem 4rem !important;
   }
 
   .shop-title {
-    font-size: 1.75rem !important;
-    margin-bottom: 1rem !important;
+    font-size: 1.5rem !important;
+    margin-bottom: 0.75rem !important;
     text-align: center;
   }
 
   /* Shop product card mobile design overrides */
   .shop-product-card {
-    border-radius: 0.5rem !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
-    border: 1px solid #f5ebe6 !important;
+    border-radius: 0.75rem !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid #f2e9e4 !important;
+    overflow: hidden;
   }
 
   .spc-image-wrapper {
-    border-radius: 0.5rem 0.5rem 0 0 !important;
+    border-radius: 0.75rem 0.75rem 0 0 !important;
+    aspect-ratio: 1 !important;
   }
 
   .spc-info {
-    padding: 0.5rem !important;
-    gap: 0.15rem !important;
+    padding: 0.6rem !important;
+    gap: 0.2rem !important;
   }
 
   .spc-header {
@@ -8006,21 +8298,20 @@ body {
   }
 
   .spc-header h3 {
-    font-size: 0.8rem !important;
+    font-size: 0.85rem !important;
     font-weight: 700 !important;
-    line-height: 1.25 !important;
-    margin: 0 0 0.15rem !important;
-    /* Limit title to 2 lines */
+    line-height: 1.3 !important;
+    margin: 0 0 0.2rem !important;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    height: 2.5em;
+    height: 2.6em;
   }
 
   .spc-price {
-    font-size: 0.9rem !important;
+    font-size: 0.95rem !important;
     font-weight: 800 !important;
   }
 
@@ -8032,8 +8323,8 @@ body {
   .spc-badge {
     top: 0.35rem !important;
     left: 0.35rem !important;
-    padding: 0.15rem 0.3rem !important;
-    font-size: 0.5rem !important;
+    padding: 0.15rem 0.4rem !important;
+    font-size: 0.55rem !important;
   }
 
   /* Search input layout on mobile */
@@ -8044,6 +8335,149 @@ body {
   .shop-search {
     padding: 0.75rem 1rem 0.75rem 2.5rem !important;
     font-size: 0.85rem !important;
+  }
+
+  /* Product Detail Mobile Adjustments */
+  .product-detail-container {
+    padding: 1rem 0.75rem 4rem !important;
+  }
+
+  .product-view-layout {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .main-image-wrapper {
+    aspect-ratio: 1 !important;
+    border-radius: 1.25rem !important;
+  }
+
+  .info-header h1 {
+    font-size: 1.65rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .current-price {
+    font-size: 1.65rem !important;
+  }
+
+  .purchase-controls {
+    gap: 0.75rem !important;
+    margin-bottom: 1.75rem !important;
+  }
+
+  .add-to-cart-btn,
+  .buy-now-btn {
+    width: 100% !important;
+    padding: 0.9rem !important;
+    font-size: 0.9rem !important;
+    border-radius: 0.75rem !important;
+  }
+
+  /* Cart Mobile Layout */
+  .cart-item-card {
+    flex-direction: column !important;
+    gap: 1rem !important;
+    padding: 1rem !important;
+  }
+
+  .cart-item-card .item-image {
+    width: 100% !important;
+    height: 160px !important;
+    border-radius: 0.75rem !important;
+  }
+
+  .cart-summary-card {
+    padding: 1.25rem !important;
+    border-radius: 1.25rem !important;
+  }
+
+  /* Checkout Stepper & Card Mobile */
+  .checkout-stepper {
+    gap: 0.5rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .checkout-stepper .step-line {
+    width: 24px !important;
+  }
+
+  .checkout-stepper .step span {
+    font-size: 0.75rem !important;
+  }
+
+  .step-icon {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .checkout-section.card {
+    padding: 1.25rem !important;
+    border-radius: 1.25rem !important;
+  }
+
+  /* Order Tracking Mobile */
+  .tracking-stepper {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1.25rem !important;
+    position: relative !important;
+    padding-left: 0.5rem !important;
+  }
+
+  .tracking-stepper .tracking-line {
+    display: none !important;
+  }
+
+  .tracking-step {
+    flex: unset !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tracking-step .step-dot {
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Admin Dashboard Mobile */
+  .admin-main {
+    padding: 1rem 0.75rem !important;
+  }
+
+  .admin-stats-v2 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+
+  .quick-actions-v2 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+  }
+
+  .admin-add-form {
+    padding: 1.5rem !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .shop-list {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+  }
+
+  .spc-header h3 {
+    font-size: 0.78rem !important;
+  }
+
+  .spc-price {
+    font-size: 0.88rem !important;
   }
 }
 /* --- TESTIMONIAL SLIDER ANIMATIONS --- */

@@ -7,6 +7,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ShopProductCard from '../components/ShopProductCard';
 import API_URL from '../config/api';
+import { products as fallbackProducts } from '../data/products';
 
 export default function ProductDetail() {
   const id = useParams().id;
@@ -38,31 +39,55 @@ export default function ProductDetail() {
   useEffect(() => {
     setLoading(true);
     fetch(`${API_URL}/api/products/${id}`)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json();
+      })
       .then(data => {
-        setProduct(data);
+        if (data && data.title && data.price !== undefined) {
+          setProduct(data);
+        } else {
+          const fb = fallbackProducts.find(p => String(p.id) === String(id));
+          setProduct(fb || null);
+        }
         setLoading(false);
       })
       .catch(err => {
-        console.error("Error fetching product:", err);
+        console.warn("Error/fallback fetching product:", err);
+        const fb = fallbackProducts.find(p => String(p.id) === String(id));
+        setProduct(fb || null);
         setLoading(false);
       });
 
     // Fetch reviews
     fetch(`${API_URL}/api/reviews/product/${id}`)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) return [];
+        return res.json();
+      })
       .then(data => {
-        setReviewsList(data);
+        setReviewsList(Array.isArray(data) ? data : []);
       })
       .catch(err => {
-        console.error("Error fetching reviews:", err);
+        console.warn("Error fetching reviews:", err);
+        setReviewsList([]);
       });
 
     // Fetch related products (using all products as pool)
     fetch(`${API_URL}/api/products`)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch related products');
+        return res.json();
+      })
       .then(data => {
-        setRelatedProducts(data.filter(p => String(p.id) !== String(id)).slice(0, 4));
+        if (Array.isArray(data) && data.length > 0) {
+          setRelatedProducts(data.filter(p => String(p.id) !== String(id)).slice(0, 4));
+        } else {
+          setRelatedProducts(fallbackProducts.filter(p => String(p.id) !== String(id)).slice(0, 4));
+        }
+      })
+      .catch(() => {
+        setRelatedProducts(fallbackProducts.filter(p => String(p.id) !== String(id)).slice(0, 4));
       });
   }, [id]);
 
@@ -95,6 +120,11 @@ export default function ProductDetail() {
     );
   }
 
+  const currentPrice = Number(product?.price || 0);
+  const oldPrice = product?.oldPrice ? Number(product.oldPrice) : null;
+  const rating = Number(product?.rating || 5);
+  const reviewsCount = Number(product?.reviews || 0);
+
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
       alert("Please log in to add items to your cart.");
@@ -115,7 +145,7 @@ export default function ProductDetail() {
     const buyNowItem = {
       productId: String(product.id),
       name: product.title || product.name || 'Product',
-      price: product.price,
+      price: currentPrice,
       image: product.image,
       quantity: quantity
     };
@@ -126,8 +156,6 @@ export default function ProductDetail() {
   const toggleAccordion = (id) => {
     setActiveAccordion(activeAccordion === id ? null : id);
   };
-
-  // Related products are now handled by useEffect state
 
   return (
     <div className="product-detail-page">
@@ -163,18 +191,18 @@ export default function ProductDetail() {
                 <div className="rating-row">
                   <div className="stars">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={14} fill={i < (product.reviews > 0 ? product.rating : 0) ? "#f59e0b" : "none"} color={i < (product.reviews > 0 ? product.rating : 0) ? "#f59e0b" : "#d7ccc8"} />
+                      <Star key={i} size={14} fill={i < (reviewsCount > 0 ? rating : 0) ? "#f59e0b" : "none"} color={i < (reviewsCount > 0 ? rating : 0) ? "#f59e0b" : "#d7ccc8"} />
                     ))}
                   </div>
-                  <span className="review-count">{product.reviews || 0} Reviews</span>
+                  <span className="review-count">{reviewsCount} Reviews</span>
                 </div>
                 <div className="price-row" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-                  <span className="current-price">₹{product.price.toFixed(2)}</span>
-                  {product.oldPrice && (
+                  <span className="current-price">₹{currentPrice.toFixed(2)}</span>
+                  {oldPrice && oldPrice > currentPrice && (
                     <>
-                      <span className="old-price">₹{product.oldPrice.toFixed(2)}</span>
+                      <span className="old-price">₹{oldPrice.toFixed(2)}</span>
                       <span className="discount-percent">
-                        {Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}% OFF
+                        {Math.round(((oldPrice - currentPrice) / oldPrice) * 100)}% OFF
                       </span>
                     </>
                   )}
@@ -187,7 +215,7 @@ export default function ProductDetail() {
                       <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#b45309' }}>Flat discount applied at checkout!</span>
                     </div>
                     <p className="offer-description" style={{ margin: 0 }}>
-                      Claim your extra <strong>₹50.00 OFF</strong> to get this jar for only <strong style={{ fontSize: '1rem', color: '#16a34a' }}>₹{(product.price - 50).toFixed(0)}</strong> + <strong>FREE Shipping</strong>!
+                      Claim your extra <strong>₹50.00 OFF</strong> to get this jar for only <strong style={{ fontSize: '1rem', color: '#16a34a' }}>₹{Math.max(0, currentPrice - 50).toFixed(0)}</strong> + <strong>FREE Shipping</strong>!
                     </p>
                     <div className="countdown-timer-line">
                       <span className="pulse-dot-red"></span>

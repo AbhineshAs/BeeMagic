@@ -1,6 +1,12 @@
 import { Link } from 'react-router-dom';
 
 export default function ShopProductCard({ product }) {
+  if (!product) return null;
+
+  const price = Number(product.price || 0);
+  const oldPrice = product.oldPrice ? Number(product.oldPrice) : null;
+  const rating = Number(product.rating || 5);
+
   return (
     <div className="shop-product-card">
       <Link to={`/product/${product.id}`} className="spc-image-link">
@@ -13,10 +19,10 @@ export default function ShopProductCard({ product }) {
               {product.badge}
             </div>
           )}
-          <img src={product.image} alt={product.title} />
+          <img src={product.image} alt={product.title || 'Product'} />
           
           <div className="spc-rating-badge">
-            <span>{product.rating || 5}.0</span>
+            <span>{rating.toFixed(1)}</span>
             <span className="star-icon">★</span>
           </div>
         </div>
@@ -27,9 +33,9 @@ export default function ShopProductCard({ product }) {
             <h3>{product.title}</h3>
           </Link>
           <div className="spc-price-wrapper">
-            <span className="spc-price">₹{product.price.toFixed(0)}</span>
-            {product.oldPrice && (
-              <span className="spc-old-price">₹{product.oldPrice.toFixed(0)}</span>
+            <span className="spc-price">₹{price.toFixed(0)}</span>
+            {oldPrice && (
+              <span className="spc-old-price">₹{oldPrice.toFixed(0)}</span>
             )}
           </div>
         </div>
