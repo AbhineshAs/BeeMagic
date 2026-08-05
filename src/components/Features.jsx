@@ -81,23 +81,21 @@ export default function Features() {
       let deg;
 
       if (isMobile) {
-        // On mobile, the path line is at left: 35px. 
-        // We wind back and forth around the line by +/- 28px (from 7px to 63px).
-        const waveOffsetPx = Math.sin(angleFreq) * 28;
+        // On mobile, increase wave frequency and swing amplitude for a rich, organic curved flight path
+        const mobileAngleFreq = progress * Math.PI * 6; // 3 full sinusoidal loops down the timeline
+        const waveOffsetPx = Math.sin(mobileAngleFreq) * 36; // +/- 36px wide curved flight swing
         leftX = `calc(35px + ${waveOffsetPx}px)`;
         
-        // Face down (180deg) and tilt based on movement direction (tangent of the wave)
-        const tilt = Math.cos(angleFreq) * 28; 
+        // Face down (180deg) and tilt dynamically into the direction of the flight curve
+        const tilt = Math.cos(mobileAngleFreq) * 36; 
         deg = 180 + tilt;
       } else {
-        // Center of container is 50%, wave oscillates by +/- 10% to follow nodes
-        const waveOffsetX = Math.sin(angleFreq) * 10; // offset percentage
+        const desktopAngleFreq = progress * Math.PI * 3;
+        const waveOffsetX = Math.sin(desktopAngleFreq) * 12; // offset percentage
         leftX = `calc(50% + ${waveOffsetX}%)`;
 
-        // Calculate Rotation Angle
-        // Derivative of sine wave gives cosine for tangent slope (direction of curve)
-        const slopeCos = Math.cos(angleFreq) * 1.5;
-        deg = 90 + Math.atan(slopeCos) * (180 / Math.PI); // offset rotation to match direction of movement
+        const slopeCos = Math.cos(desktopAngleFreq) * 1.8;
+        deg = 90 + Math.atan(slopeCos) * (180 / Math.PI);
       }
 
       setBeeStyle({
