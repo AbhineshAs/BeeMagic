@@ -298,20 +298,22 @@ export default function AuthCard() {
           </>
         )}
 
-        <div className="input-group">
-          <label htmlFor="email">Email Address</label>
-          <div className="input-wrapper">
-            <MailIcon />
-            <input
-              type="email"
-              id="email"
-              placeholder="hello@beemagic.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+        {isLogin && (
+          <div className="input-group">
+            <label htmlFor="email">Email Address</label>
+            <div className="input-wrapper">
+              <MailIcon />
+              <input
+                type="email"
+                id="email"
+                placeholder="hello@beemagic.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="input-group">
           <div className="password-header">
