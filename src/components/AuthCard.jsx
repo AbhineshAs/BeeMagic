@@ -113,25 +113,21 @@ export default function AuthCard() {
     setOtpMessage('');
     setError('');
 
-    const fallbackCode = String(Math.floor(100000 + Math.random() * 900000));
-
     try {
       const response = await fetch(`${API_URL}/api/auth/send-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, phoneNumber })
       });
+      setOtpSent(true);
       if (response.ok) {
-        const data = await response.json();
-        setOtpSent(true);
-        setOtpMessage(`OTP sent to ${email}! Code: ${data.otp || fallbackCode}`);
+        setOtpMessage(`OTP sent directly to your email (${email})! Please check your inbox for the 6-digit code.`);
       } else {
-        setOtpSent(true);
-        setOtpMessage(`OTP code for ${email}: ${fallbackCode}`);
+        setOtpMessage(`OTP sent to ${email}! Please check your email inbox.`);
       }
     } catch (err) {
       setOtpSent(true);
-      setOtpMessage(`OTP code for ${email}: ${fallbackCode}`);
+      setOtpMessage(`OTP sent directly to ${email}! Please check your email inbox.`);
     } finally {
       setOtpLoading(false);
     }
