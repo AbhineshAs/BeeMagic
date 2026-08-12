@@ -85,8 +85,12 @@ export default function Contact() {
                   <MapPin size={24} />
                 </div>
                 <div className="info-text">
-                  <h4>Our Boutique</h4>
-                  <p>72 Honeycomb Lane,<br />Amber Meadows, CA 90210</p>
+                  <h4>Address</h4>
+                  <p>
+                    <strong>Laya Enterprises</strong><br />
+                    Aramthanam, Vamanapuram Circle,<br />
+                    Thiruvananthapuram, Kerala - 695606
+                  </p>
                 </div>
               </div>
               <div className="info-card">
@@ -94,8 +98,12 @@ export default function Contact() {
                   <Phone size={24} />
                 </div>
                 <div className="info-text">
-                  <h4>Phone</h4>
-                  <p>+1 (555) 420-BEE-FREE</p>
+                  <h4>Phone / WhatsApp</h4>
+                  <p>
+                    <a href="https://wa.me/919074799336" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>
+                      +91 9074799336 <span style={{ fontSize: '0.85em', opacity: 0.85 }}>(WhatsApp Only)</span>
+                    </a>
+                  </p>
                 </div>
               </div>
               <div className="info-card">
@@ -104,23 +112,35 @@ export default function Contact() {
                 </div>
                 <div className="info-text">
                   <h4>Email</h4>
-                  <p>hello@beemagicboutique.com</p>
+                  <p>
+                    <a href="mailto:beemagic777@gmail.com" style={{ color: 'inherit', textDecoration: 'none' }}>
+                      beemagic777@gmail.com
+                    </a>
+                  </p>
                 </div>
               </div>
             </div>
 
             <div className="map-display">
               <div className="map-placeholder">
-                <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5ce?w=800&auto=format&fit=crop&q=60" alt="Map Location" />
-                <div className="map-overlay">
-                   <div className="map-pin-custom">
-                     <div className="pin-point"></div>
-                   </div>
-                </div>
-                <button className="view-maps-btn">
+                <iframe
+                  title="Laya Enterprises Location"
+                  src="https://maps.google.com/maps?q=Vamanapuram,Thiruvananthapuram,Kerala,695606&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0, borderRadius: '16px' }}
+                  allowFullScreen=""
+                  loading="lazy"
+                ></iframe>
+                <a 
+                  href="https://maps.google.com/?q=Laya+Enterprises+Vamanapuram+Thiruvananthapuram+Kerala+695606" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="view-maps-btn"
+                >
                   View on Google Maps
                   <ExternalLink size={16} />
-                </button>
+                </a>
               </div>
             </div>
           </section>

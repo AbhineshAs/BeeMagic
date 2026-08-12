@@ -39,19 +39,25 @@ export default function Footer() {
             <Link to="/track-order">Track Order</Link>
             <Link to="/contact">Contact</Link>
           </div>
-          <div className="footer-column newsletter-col">
-            <h4>NEWSLETTER</h4>
-            <p>Get exclusive offers and early access to limited harvests.</p>
-            <form className="footer-newsletter-form" onSubmit={e => e.preventDefault()}>
-              <input type="email" placeholder="Email Address" required />
-              <button type="submit">SIGN UP</button>
-            </form>
+          <div className="footer-column">
+            <h4>CONTACT US</h4>
+            <p style={{ fontSize: '0.85rem', color: '#8d6e63', lineHeight: '1.5', margin: 0 }}>
+              <strong>Laya Enterprises</strong><br />
+              Aramthanam, Vamanapuram Circle,<br />
+              Thiruvananthapuram, Kerala - 695606<br />
+              <a href="https://wa.me/919074799336" target="_blank" rel="noopener noreferrer" style={{ color: '#d97706', textDecoration: 'none' }}>
+                WhatsApp: +91 9074799336
+              </a><br />
+              <a href="mailto:beemagic777@gmail.com" style={{ color: '#d97706', textDecoration: 'none' }}>
+                beemagic777@gmail.com
+              </a>
+            </p>
           </div>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; 2026 Bee Magic Honey Boutique. All rights reserved.</p>
+        <p>&copy; 2026 Laya Enterprises (Bee Magic). All rights reserved.</p>
         <div className="footer-legal">
           <Link to="#">Privacy Policy</Link>
           <Link to="#">Terms of Service</Link>
