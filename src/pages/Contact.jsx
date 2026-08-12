@@ -50,11 +50,11 @@ export default function Contact() {
               <form className="contact-form" onSubmit={e => e.preventDefault()}>
                 <div className="form-group">
                   <label>Full Name</label>
-                  <input type="text" placeholder="John Doe" />
+                  <input type="text" />
                 </div>
                 <div className="form-group">
                   <label>Email Address</label>
-                  <input type="email" placeholder="john@example.com" />
+                  <input type="email" />
                 </div>
                 <div className="form-group">
                   <label>Subject</label>
@@ -70,7 +70,7 @@ export default function Contact() {
                 </div>
                 <div className="form-group">
                   <label>Your Message</label>
-                  <textarea placeholder="How can we help you?"></textarea>
+                  <textarea></textarea>
                 </div>
                 <button type="submit" className="submit-inquiry-btn">Submit Inquiry</button>
               </form>

@@ -212,7 +212,6 @@ export default function AuthCard() {
                 <input
                   type="text"
                   id="name"
-                  placeholder="Alexander Beekeeper"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -227,7 +226,6 @@ export default function AuthCard() {
                 <input
                   type="text"
                   id="address"
-                  placeholder="742 Nectar Blossom Lane, Portland, OR"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   required
@@ -242,7 +240,6 @@ export default function AuthCard() {
                 <input
                   type="tel"
                   id="phoneNumber"
-                  placeholder="+91 9061218582"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   required
@@ -257,7 +254,6 @@ export default function AuthCard() {
                 <input
                   type="email"
                   id="email"
-                  placeholder="alexander@beemagic.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -281,7 +277,6 @@ export default function AuthCard() {
                   <input
                     type="text"
                     id="otp"
-                    placeholder="Enter 6-digit code"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
                     required
@@ -307,7 +302,6 @@ export default function AuthCard() {
               <input
                 type="email"
                 id="email"
-                placeholder="hello@beemagic.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -326,7 +320,6 @@ export default function AuthCard() {
             <input
               type="password"
               id="password"
-              placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required

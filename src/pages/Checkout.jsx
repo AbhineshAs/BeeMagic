@@ -347,7 +347,6 @@ export default function Checkout() {
                     <label>First Name</label>
                     <input 
                       type="text" 
-                      placeholder="John" 
                       value={shippingInfo.firstName}
                       onChange={(e) => setShippingInfo({ ...shippingInfo, firstName: e.target.value })}
                       required 
@@ -357,7 +356,6 @@ export default function Checkout() {
                     <label>Last Name</label>
                     <input 
                       type="text" 
-                      placeholder="Doe" 
                       value={shippingInfo.lastName}
                       onChange={(e) => setShippingInfo({ ...shippingInfo, lastName: e.target.value })}
                       required 
@@ -368,7 +366,6 @@ export default function Checkout() {
                   <label>Street Address</label>
                   <input 
                     type="text" 
-                    placeholder="123 Artisan Lane" 
                     value={shippingInfo.street}
                     onChange={(e) => setShippingInfo({ ...shippingInfo, street: e.target.value })}
                     required 
@@ -408,7 +405,6 @@ export default function Checkout() {
                   <label>Zip Code</label>
                   <input 
                     type="text" 
-                    placeholder="400001" 
                     value={shippingInfo.zipCode}
                     onChange={(e) => setShippingInfo({ ...shippingInfo, zipCode: e.target.value })}
                     required 

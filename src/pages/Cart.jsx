@@ -94,7 +94,7 @@ export default function Cart() {
             </div>
 
             <div className="promo-section">
-              <input type="text" placeholder="Promo Code" />
+              <input type="text" />
               <button className="apply-btn">APPLY</button>
             </div>
             <p className="promo-note">Free gift wrapping available on all orders over ₹500.</p>

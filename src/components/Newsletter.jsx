@@ -15,7 +15,6 @@ export default function Newsletter() {
         <form className="newsletter-form-dribbble" onSubmit={(e) => e.preventDefault()}>
           <input 
             type="email" 
-            placeholder="Enter your email address" 
             required 
             className="newsletter-input-dribbble"
           />

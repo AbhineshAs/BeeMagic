@@ -172,7 +172,6 @@ export default function MockGoogleLogin() {
                       <input
                         type="email"
                         id="custom-email"
-                        placeholder="yourname@gmail.com"
                         value={customEmail}
                         onChange={(e) => setCustomEmail(e.target.value)}
                         required={isCustom}
@@ -216,7 +215,6 @@ export default function MockGoogleLogin() {
                     <input
                       type="text"
                       id="p-name"
-                      placeholder="Your full name"
                       value={profileName}
                       onChange={(e) => setProfileName(e.target.value)}
                       required
@@ -231,7 +229,6 @@ export default function MockGoogleLogin() {
                     <input
                       type="text"
                       id="p-address"
-                      placeholder="Street, City, State, ZIP"
                       value={profileAddress}
                       onChange={(e) => setProfileAddress(e.target.value)}
                       required
@@ -246,7 +243,6 @@ export default function MockGoogleLogin() {
                     <input
                       type="tel"
                       id="p-phone"
-                      placeholder="Phone number"
                       value={profilePhone}
                       onChange={(e) => setProfilePhone(e.target.value)}
                       required
