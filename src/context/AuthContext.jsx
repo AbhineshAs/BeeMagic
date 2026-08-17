@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ email, password, name, address, phoneNumber, provider })
       });
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || 'Login failed');
       }
       const userData = await response.json();
@@ -25,6 +25,9 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('bee_magic_user', JSON.stringify(userData));
       return userData;
     } catch (err) {
+      if (err.name === 'TypeError' || err.message === 'Load failed' || err.message === 'Failed to fetch') {
+        throw new Error('Unable to connect to the backend server. Please make sure the Spring Boot server is running on port 8080.');
+      }
       throw err;
     }
   };
