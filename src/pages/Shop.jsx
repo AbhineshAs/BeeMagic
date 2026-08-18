@@ -4,12 +4,11 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ShopProductCard from '../components/ShopProductCard';
 import API_URL from '../config/api';
-import { products as fallbackProducts } from '../data/products';
-
 export default function Shop() {
-  const [products, setProducts] = useState(fallbackProducts);
-  const [filteredProducts, setFilteredProducts] = useState(fallbackProducts);
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [backendError, setBackendError] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('best');
   const [activeCategory, setActiveCategory] = useState('all');
@@ -21,19 +20,21 @@ export default function Shop() {
         return res.json();
       })
       .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data)) {
           setProducts(data);
           setFilteredProducts(data);
         } else {
-          setProducts(fallbackProducts);
-          setFilteredProducts(fallbackProducts);
+          setProducts([]);
+          setFilteredProducts([]);
         }
+        setBackendError(false);
         setLoading(false);
       })
       .catch(err => {
-        console.warn("Error fetching products, using fallback:", err);
-        setProducts(fallbackProducts);
-        setFilteredProducts(fallbackProducts);
+        console.warn("Error fetching products from backend:", err);
+        setProducts([]);
+        setFilteredProducts([]);
+        setBackendError(true);
         setLoading(false);
       });
   }, []);
@@ -120,6 +121,15 @@ export default function Shop() {
 
           {loading ? (
             <div style={{ textAlign: 'center', padding: '3rem' }}>Loading the harvest...</div>
+          ) : backendError ? (
+            <div style={{ padding: '3rem 2rem', background: '#fff8f6', borderRadius: '20px', border: '1px solid #fecaca', textAlign: 'center', margin: '2rem 0' }}>
+              <h3 style={{ color: '#dc2626', fontFamily: "'Playfair Display', serif", fontSize: '1.5rem', marginBottom: '0.6rem' }}>
+                Backend Server Offline
+              </h3>
+              <p style={{ color: '#7f1d1d', fontSize: '0.95rem', margin: 0, maxWidth: '600px', marginLeft: 'auto', marginRight: 'auto' }}>
+                The frontend cannot connect to the backend server at <strong>http://localhost:8080</strong>. Please start your Spring Boot backend (<code>./gradlew bootRun</code>) to view live products from the database.
+              </p>
+            </div>
           ) : (
             <div className="shop-list">
               {filteredProducts.length > 0 ? filteredProducts.map((product, index) => (
@@ -127,8 +137,8 @@ export default function Shop() {
                   <ShopProductCard product={product} />
                 </div>
               )) : (
-                <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '3rem' }}>
-                  No products match your search.
+                <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '3rem', color: '#8d6e63' }}>
+                  No products found in the database.
                 </div>
               )}
             </div>

@@ -7,7 +7,6 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ShopProductCard from '../components/ShopProductCard';
 import API_URL from '../config/api';
-import { products as fallbackProducts } from '../data/products';
 
 export default function ProductDetail() {
   const id = useParams().id;
@@ -47,15 +46,13 @@ export default function ProductDetail() {
         if (data && data.title && data.price !== undefined) {
           setProduct(data);
         } else {
-          const fb = fallbackProducts.find(p => String(p.id) === String(id));
-          setProduct(fb || null);
+          setProduct(null);
         }
         setLoading(false);
       })
       .catch(err => {
-        console.warn("Error/fallback fetching product:", err);
-        const fb = fallbackProducts.find(p => String(p.id) === String(id));
-        setProduct(fb || null);
+        console.warn("Error fetching product from backend:", err);
+        setProduct(null);
         setLoading(false);
       });
 
@@ -73,21 +70,21 @@ export default function ProductDetail() {
         setReviewsList([]);
       });
 
-    // Fetch related products (using all products as pool)
+    // Fetch related products (using all products from backend)
     fetch(`${API_URL}/api/products`)
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch related products');
         return res.json();
       })
       .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data)) {
           setRelatedProducts(data.filter(p => String(p.id) !== String(id)).slice(0, 4));
         } else {
-          setRelatedProducts(fallbackProducts.filter(p => String(p.id) !== String(id)).slice(0, 4));
+          setRelatedProducts([]);
         }
       })
       .catch(() => {
-        setRelatedProducts(fallbackProducts.filter(p => String(p.id) !== String(id)).slice(0, 4));
+        setRelatedProducts([]);
       });
   }, [id]);
 
@@ -175,12 +172,15 @@ export default function ProductDetail() {
                 )}
                 <img src={product.image} alt={product.title} />
               </div>
-              <div className="thumbnail-grid">
-                <div className="thumbnail active"><img src={product.image} alt="thumb" /></div>
-                <div className="thumbnail"><img src="https://images.unsplash.com/photo-1558583082-409143c7c9f8?w=200" alt="thumb" /></div>
-                <div className="thumbnail"><img src="https://images.unsplash.com/photo-1587049352851-8d4e891347d4?w=200" alt="thumb" /></div>
-                <div className="thumbnail"><img src="https://images.unsplash.com/photo-1596704017254-9b121068fb31?w=200" alt="thumb" /></div>
-              </div>
+              {product.images && product.images.length > 1 && (
+                <div className="thumbnail-grid">
+                  {product.images.map((img, idx) => (
+                    <div key={idx} className={`thumbnail ${idx === 0 ? 'active' : ''}`}>
+                      <img src={img} alt={`${product.title} view ${idx + 1}`} />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Info Section */}

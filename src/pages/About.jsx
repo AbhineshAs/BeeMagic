@@ -86,31 +86,39 @@ export default function About() {
         {/* Team Section */}
         <section className="team-section">
           <div className="team-header reveal-on-scroll slide-up">
+            <span className="section-label">OUR LEADERSHIP</span>
             <h2>Meet the Keepers</h2>
-            <p>The dedicated team of enthusiasts behind every jar of Bee Magic honey.</p>
-            <button className="join-btn">JOIN THE TEAM</button>
+            <p>The dedicated visionaries guiding every batch of Bee Magic honey.</p>
           </div>
           <div className="team-grid">
-            <div className="team-member reveal-on-scroll slide-up delay-100">
-              <div className="member-img">
-                <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=600" alt="Julian Aris" />
+            <div className="team-card reveal-on-scroll slide-up delay-100">
+              <div className="team-card-inner">
+                <div className="team-avatar-ring">
+                  <div className="team-avatar-monogram">KH</div>
+                </div>
+                <h3>Krishna Hassan</h3>
+                <span className="team-role-pill gold">Founder</span>
               </div>
-              <h3>Julian Aris</h3>
-              <p>Founder & Master Beekeeper</p>
             </div>
-            <div className="team-member reveal-on-scroll slide-up delay-200">
-              <div className="member-img">
-                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600" alt="Dr. Elena Thorne" />
+
+            <div className="team-card reveal-on-scroll slide-up delay-200">
+              <div className="team-card-inner">
+                <div className="team-avatar-ring">
+                  <div className="team-avatar-monogram">AR</div>
+                </div>
+                <h3>Abhijith RR</h3>
+                <span className="team-role-pill gold">Co-Founder</span>
               </div>
-              <h3>Dr. Elena Thorne</h3>
-              <p>Quality Assurance Director</p>
             </div>
-            <div className="team-member reveal-on-scroll slide-up delay-300">
-              <div className="member-img">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600" alt="Marcus Chen" />
+
+            <div className="team-card reveal-on-scroll slide-up delay-300">
+              <div className="team-card-inner">
+                <div className="team-avatar-ring">
+                  <div className="team-avatar-monogram">AH</div>
+                </div>
+                <h3>Ashik Husain</h3>
+                <span className="team-role-pill amber">Team Partner</span>
               </div>
-              <h3>Marcus Chen</h3>
-              <p>Head of Sustainability</p>
             </div>
           </div>
         </section>

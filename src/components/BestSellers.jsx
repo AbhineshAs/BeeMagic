@@ -2,32 +2,8 @@ import { useState, useEffect } from 'react';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import API_URL from '../config/api';
 
-const testimonials = [
-  {
-    id: 1,
-    rating: 5,
-    text: "As a chef, I'm very particular about ingredients. HoneyBee Treasures delivers exceptional quality every single time. It adds the perfect touch of natural sweetness to my signature glazes.",
-    name: "Marcus Chen",
-    location: "San Francisco, CA"
-  },
-  {
-    id: 2,
-    rating: 5,
-    text: "Pure, rich, and absolutely delicious. This is hands-down the best raw honey I've ever tasted! I use the turmeric infusion daily in my morning tea, and it has done wonders for my digestion.",
-    name: "Elena Rivera",
-    location: "Austin, Texas"
-  },
-  {
-    id: 3,
-    rating: 5,
-    text: "Fast shipping and incredible quality. It's like a spoonful of sunshine in every single jar! Highly recommend the ginger and wildflower varieties to anyone looking for authentic raw honey.",
-    name: "Sarah Jenkins",
-    location: "Seattle, Washington"
-  }
-];
-
 export default function BestSellers() {
-  const [allTestimonials, setAllTestimonials] = useState(testimonials);
+  const [allTestimonials, setAllTestimonials] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
@@ -56,8 +32,7 @@ export default function BestSellers() {
           };
         });
 
-        // Merge database reviews at the beginning of the list, followed by static fallbacks
-        setAllTestimonials([...dbTestimonials, ...testimonials]);
+        setAllTestimonials(dbTestimonials);
       } catch (err) {
         console.error("Failed to load dynamic reviews for testimonial slider:", err);
       }
@@ -96,7 +71,11 @@ export default function BestSellers() {
     setActiveIndex(index);
   };
 
-  const active = allTestimonials[activeIndex] || testimonials[0];
+  if (allTestimonials.length === 0) {
+    return null;
+  }
+
+  const active = allTestimonials[activeIndex];
 
   return (
     <section className="testimonials-section">

@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
       return userData;
     } catch (err) {
       if (err.name === 'TypeError' || err.message === 'Load failed' || err.message === 'Failed to fetch') {
-        throw new Error('Unable to connect to the backend server. Please make sure the Spring Boot server is running on port 8080.');
+        throw new Error('Unable to connect to the backend server. Please make sure the Spring Boot server is running on port 8080.', { cause: err });
       }
       throw err;
     }
